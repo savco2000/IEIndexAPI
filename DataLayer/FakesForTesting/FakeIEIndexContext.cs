@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Data.Entity;
+using DataLayer.Contexts;
 using DataLayer.DomainModels;
 
-namespace DataLayer.Contexts
+namespace DataLayer.FakesForTesting
 {
     public class FakeIEIndexContext : IIEIndexContext
     {
