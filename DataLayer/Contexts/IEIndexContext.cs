@@ -4,6 +4,13 @@ using DataLayer.DomainModels.EntityConfigurations;
 
 namespace DataLayer.Contexts
 {
+    public interface IIEIndexContext : IContext
+    {
+        IDbSet<Article> Articles { get; }
+        IDbSet<Author> Authors { get; }
+        IDbSet<Subject> Subjects { get; }
+    }
+
     public class IEIndexContext : BaseContext<IEIndexContext>
     {
         public DbSet<Article> Articles { get; set; }
