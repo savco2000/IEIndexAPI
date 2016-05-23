@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contexts\BaseContext.cs" />
     <Compile Include="DomainModels\Article.cs" />
     <Compile Include="DomainModels\Author.cs" />
     <Compile Include="DomainModels\Entity.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="DomainModels\EntityConfigurations\SubjectConfiguration.cs" />
     <Compile Include="DomainModels\Enums.cs" />
     <Compile Include="DomainModels\Subject.cs" />
+    <Compile Include="Contexts\IEIndexContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
