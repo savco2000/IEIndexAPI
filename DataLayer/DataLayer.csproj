@@ -61,6 +61,7 @@
     <Compile Include="DomainModels\Subject.cs" />
     <Compile Include="Contexts\IEIndexContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
