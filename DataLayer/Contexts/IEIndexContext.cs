@@ -11,11 +11,21 @@ namespace DataLayer.Contexts
         IDbSet<Subject> Subjects { get; }
     }
 
-    public class IEIndexContext : BaseContext<IEIndexContext>
+    public class IEIndexContext : BaseContext<IEIndexContext>, IIEIndexContext
     {
         public IDbSet<Article> Articles { get; set; }
         public IDbSet<Author> Authors { get; set; }
         public IDbSet<Subject> Subjects { get; set; }
+
+        public void SetModified(object entity)
+        {
+            Entry(entity).State = EntityState.Modified;
+        }
+
+        public void SetAdd(object entity)
+        {
+            Entry(entity).State = EntityState.Added;
+        }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

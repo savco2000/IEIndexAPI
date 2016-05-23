@@ -5,24 +5,24 @@ namespace DataLayer
 {
     public interface IUnitOfWork : IDisposable
     {
-        IEIndexContext Context { get; }
+        IContext Context { get; }
         void Save();
     }
 
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork<TContext> : IUnitOfWork where TContext : IContext, new()
     {
-        private readonly IEIndexContext _context;
+        private readonly IContext _context;
         private bool _isAlive = true;
         private bool _isCommitted;
 
-        public IEIndexContext Context => _context;
+        public IContext Context => _context;
 
         public UnitOfWork()
         {
-            _context = new IEIndexContext();
+            _context = new TContext();
         }
 
-        public UnitOfWork(IEIndexContext context)
+        public UnitOfWork(IContext context)
         {
             _context = context;
         }
