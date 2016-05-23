@@ -1,0 +1,5 @@
+D:\Sites\IEIndexAPI\DataLayer\bin\Debug\DataLayer.dll
+D:\Sites\IEIndexAPI\DataLayer\bin\Debug\DataLayer.pdb
+D:\Sites\IEIndexAPI\DataLayer\obj\Debug\DataLayer.csprojResolveAssemblyReference.cache
+D:\Sites\IEIndexAPI\DataLayer\obj\Debug\DataLayer.dll
+D:\Sites\IEIndexAPI\DataLayer\obj\Debug\DataLayer.pdb
