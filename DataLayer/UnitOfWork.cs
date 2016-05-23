@@ -5,6 +5,7 @@ namespace DataLayer
 {
     public interface IUnitOfWork : IDisposable
     {
+        IEIndexContext Context { get; }
         void Save();
     }
 
@@ -14,7 +15,7 @@ namespace DataLayer
         private bool _isAlive = true;
         private bool _isCommitted;
 
-        internal IEIndexContext Context => _context;
+        public IEIndexContext Context => _context;
 
         public UnitOfWork()
         {
