@@ -13,9 +13,9 @@ namespace DataLayer.Contexts
 
     public class IEIndexContext : BaseContext<IEIndexContext>
     {
-        public DbSet<Article> Articles { get; set; }
-        public DbSet<Author> Authors { get; set; }
-        public DbSet<Subject> Subjects { get; set; }
+        public IDbSet<Article> Articles { get; set; }
+        public IDbSet<Author> Authors { get; set; }
+        public IDbSet<Subject> Subjects { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
