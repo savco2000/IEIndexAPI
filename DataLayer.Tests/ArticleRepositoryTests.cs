@@ -9,11 +9,11 @@ namespace DataLayer.Tests
 {
     public class ArticleRepositoryTests
     {
-        private readonly List<Article> articles;
+        private readonly List<Article> _articles;
 
         public ArticleRepositoryTests()
         {
-            articles = new List<Article>
+            _articles = new List<Article>
             {
                 new Article
                 {
@@ -44,7 +44,7 @@ namespace DataLayer.Tests
             using (var fakeCtx = new FakeIEIndexContext())
             using (var uow = new UnitOfWork<FakeIEIndexContext>(fakeCtx))
             {
-                articles.ForEach(article => fakeCtx.Articles.Add(article));
+                _articles.ForEach(article => fakeCtx.Articles.Add(article));
 
                 var repo = new ArticleRepository(uow);
                 const int expectedCount = 2;
@@ -60,7 +60,7 @@ namespace DataLayer.Tests
             using (var fakeCtx = new FakeIEIndexContext())
             using (var uow = new UnitOfWork<FakeIEIndexContext>(fakeCtx))
             {
-                articles.ForEach(article => fakeCtx.Articles.Add(article));
+                _articles.ForEach(article => fakeCtx.Articles.Add(article));
 
                 var repo = new ArticleRepository(uow);
                 const string expectedTitle = "From Undocumented Immigrant to Brain Surgeon: An Interview with Alfredo Quiñones-Hinojosa";
@@ -76,7 +76,7 @@ namespace DataLayer.Tests
             using (var fakeCtx = new FakeIEIndexContext())
             using (var uow = new UnitOfWork<FakeIEIndexContext>(fakeCtx))
             {
-                articles.ForEach(article => fakeCtx.Articles.Add(article));
+                _articles.ForEach(article => fakeCtx.Articles.Add(article));
 
                 var repo = new ArticleRepository(uow);
                 const string titleOfArticleToBeDeleted = "From Undocumented Immigrant to Brain Surgeon: An Interview with Alfredo Quiñones-Hinojosa";
