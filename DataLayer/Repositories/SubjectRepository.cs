@@ -34,13 +34,9 @@ namespace DataLayer.Repositories
         public void InsertOrUpdate(Subject subject)
         {
             if (subject.IsNewEntity)
-            {
                 _context.SetAdd(subject);
-            }
             else
-            {
                 _context.SetModified(subject);
-            }
         }
 
         public void Delete(Subject subject) => _context.Subjects.Remove(subject);
