@@ -11,7 +11,6 @@ namespace DataLayer.Tests
 {
     public class ArticleRepositoryTests
     {
-        private readonly List<Article> _articles;
         private readonly Mock<IIEIndexContext> _mockIEIndexContext;
         private readonly IIEIndexContext _fakeCtx;
 
@@ -35,7 +34,7 @@ namespace DataLayer.Tests
                 new Subject {Id = 4,Name = "Public Policy" }
             };
 
-            _articles = new List<Article> {
+            var articles = new List<Article> {
                 new Article {
                     Id = 1,
                     Title = "All-in-One Comprehensive Immigration Reform",
@@ -113,7 +112,7 @@ namespace DataLayer.Tests
             };
 
             _fakeCtx = _mockIEIndexContext.Object;
-            _articles.ForEach(article => _fakeCtx.Articles.Add(article));
+            articles.ForEach(article => _fakeCtx.Articles.Add(article));
         }
 
         [Fact]
