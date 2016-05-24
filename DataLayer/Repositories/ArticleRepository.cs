@@ -43,11 +43,11 @@ namespace DataLayer.Repositories
         {
             if (article.IsNewEntity)
             {
-                _uow.Context.SetAdd(article);
+                _context.SetAdd(article);
             }
             else
             {
-                _uow.Context.SetModified(article);
+                _context.SetModified(article);
             }
         }
 
