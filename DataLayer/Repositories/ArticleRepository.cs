@@ -24,16 +24,8 @@ namespace DataLayer.Repositories
 
         public IQueryable<Article> All => _context.Articles;
 
-        public IQueryable<Article> AllIncluding(params Expression<Func<Article, object>>[] includeProperties)
-        {
-            var query = _context.Articles.AsQueryable();
-            foreach (var includeProperty in includeProperties)
-            {
-                query = query.Include(includeProperty);
-            }
-            
-            return query;
-        }
+        public IQueryable<Article> AllIncluding(params Expression<Func<Article, object>>[] includeProperties) => 
+            includeProperties.Aggregate(_context.Articles.AsQueryable(), (current, includeProperty) => current.Include(includeProperty));
 
         public Article Find(int id) => _context.Articles.Find(id);
 
