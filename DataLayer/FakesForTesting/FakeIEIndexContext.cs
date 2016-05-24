@@ -11,6 +11,13 @@ namespace DataLayer.FakesForTesting
         public IDbSet<Author> Authors { get; }
         public IDbSet<Subject> Subjects { get; }
 
+        public FakeIEIndexContext()
+        {
+            Articles = new ArticleFakeDbSet();
+            Authors = new AuthorFakeDbSet();
+            Subjects = new SubjectFakeDbSet();
+        }
+
         public int SaveChanges()
         {
             throw new NotImplementedException();

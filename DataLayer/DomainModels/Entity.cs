@@ -4,7 +4,7 @@ namespace DataLayer.DomainModels
 {
     public abstract class Entity
     {
-        public virtual int Id { get; protected internal set; }
+        public virtual int Id { get; set; }
 
         public bool IsNewEntity => Id == 0;
 
