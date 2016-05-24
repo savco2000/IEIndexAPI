@@ -121,10 +121,11 @@ namespace DataLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fakeCtx))
             {
-                var repo = new ArticleRepository(uow);
+                var sut = new ArticleRepository(uow);
+
                 const int expectedCount = 5;
-                var actualCount1 = repo.All.Count();
-                var actualCount2 = repo.AllIncluding(x => x.Authors).Count();
+                var actualCount1 = sut.All.Count();
+                var actualCount2 = sut.AllIncluding(x => x.Authors).Count();
 
                 _mockIEIndexContext.VerifyGet(x => x.Articles);
 
@@ -138,9 +139,10 @@ namespace DataLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fakeCtx))
             {
-                var repo = new ArticleRepository(uow);
+                var sut = new ArticleRepository(uow);
+
                 const string expectedTitle = "From Undocumented Immigrant to Brain Surgeon: An Interview with Alfredo Quiñones-Hinojosa";
-                var actualTitle = repo.Find(2).Title;
+                var actualTitle = sut.Find(2).Title;
 
                 _mockIEIndexContext.VerifyGet(x => x.Articles);
 
@@ -153,14 +155,14 @@ namespace DataLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fakeCtx))
             {
-                var repo = new ArticleRepository(uow);
+                var sut = new ArticleRepository(uow);
 
-                var articleToDelete = repo.Find(2);
+                var articleToDelete = sut.Find(2);
                 var titleOfArticleToBeDeleted = articleToDelete.Title;
-                repo.Delete(articleToDelete);
+                sut.Delete(articleToDelete);
 
                 const int expectedCount = 0;
-                var actualArticleCount = repo.All.Count(article => article.Title == titleOfArticleToBeDeleted);
+                var actualArticleCount = sut.All.Count(article => article.Title == titleOfArticleToBeDeleted);
 
                 _mockIEIndexContext.VerifyGet(x => x.Articles);
                
@@ -171,21 +173,19 @@ namespace DataLayer.Tests
         [Fact]
         public void insertorupdate_inserts_new_article()
         {
-            var newArticle = new Article
-            {
-                Title = "All-in-One Comprehensive Immigration Reform",
-                Page = 4,
-                Issue = Issues.Fall,
-                PublicationYear = PublicationYears.Y2013,
-                IsSupplement = false,
-                Hyperlink = "http://www.nafsa.org/_/File/_/ie_julaug13_frontlines.pdf"
-            };
-           
             using (var uow = new UnitOfWork<IEIndexContext>(_fakeCtx))
             {
-                var repo = new ArticleRepository(uow);
+                var sut = new ArticleRepository(uow);
 
-                repo.InsertOrUpdate(newArticle);
+                sut.InsertOrUpdate(new Article
+                {
+                    Title = "All-in-One Comprehensive Immigration Reform",
+                    Page = 4,
+                    Issue = Issues.Fall,
+                    PublicationYear = PublicationYears.Y2013,
+                    IsSupplement = false,
+                    Hyperlink = "http://www.nafsa.org/_/File/_/ie_julaug13_frontlines.pdf"
+                });
 
                 _mockIEIndexContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Once);
                 _mockIEIndexContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Never);
@@ -195,22 +195,20 @@ namespace DataLayer.Tests
         [Fact]
         public void insertorupdate_updates_existing_article()
         {
-            var existingArticle = new Article
-            {
-                Id = 1,
-                Title = "All-in-One Comprehensive Immigration Reform",
-                Page = 4,
-                Issue = Issues.Fall,
-                PublicationYear = PublicationYears.Y2013,
-                IsSupplement = false,
-                Hyperlink = "http://www.nafsa.org/_/File/_/ie_julaug13_frontlines.pdf"
-            };
-            
             using (var uow = new UnitOfWork<IEIndexContext>(_fakeCtx))
             {
-                var repo = new ArticleRepository(uow);
+                var sut = new ArticleRepository(uow);
 
-                repo.InsertOrUpdate(existingArticle);
+                sut.InsertOrUpdate(new Article
+                {
+                    Id = 1,
+                    Title = "All-in-One Comprehensive Immigration Reform",
+                    Page = 4,
+                    Issue = Issues.Fall,
+                    PublicationYear = PublicationYears.Y2013,
+                    IsSupplement = false,
+                    Hyperlink = "http://www.nafsa.org/_/File/_/ie_julaug13_frontlines.pdf"
+                });
 
                 _mockIEIndexContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Never);
                 _mockIEIndexContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Once);
