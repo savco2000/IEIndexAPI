@@ -61,7 +61,7 @@ namespace DataLayer.Tests
 
                 _mockIEIndexContext.VerifyAll();
 
-                Assert.Equal(expectedTitle, actualTitle);
+                Assert.Equal(expectedTitle.ToLowerInvariant(), actualTitle.ToLowerInvariant());
             }
         }
     }
