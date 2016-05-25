@@ -51,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contexts\BaseContext.cs" />
-    <Compile Include="FakesForTesting\FakeIEIndexContext.cs" />
     <Compile Include="Contexts\IContext.cs" />
     <Compile Include="DomainModels\Article.cs" />
     <Compile Include="DomainModels\Author.cs" />
