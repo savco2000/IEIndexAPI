@@ -80,6 +80,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ArticleRepositoryTests.cs" />
+    <Compile Include="ArticleRepositoryTestsFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
