@@ -61,7 +61,7 @@
     <Compile Include="DomainModels\Enums.cs" />
     <Compile Include="DomainModels\Subject.cs" />
     <Compile Include="Contexts\IEIndexContext.cs" />
-    <Compile Include="FakesForTesting\FakeDbSets.cs" />
+    <Compile Include="FakesForTesting\FakeDbSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ArticleRepository.cs" />
     <Compile Include="Repositories\AuthorRepository.cs" />

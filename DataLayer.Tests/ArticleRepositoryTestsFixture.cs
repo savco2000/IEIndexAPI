@@ -16,7 +16,7 @@ namespace DataLayer.Tests
         public ArticleRepositoryTestsFixture()
         {
             MockIEIndexContext = new Mock<IIEIndexContext>();
-            MockIEIndexContext.Setup(x => x.Articles).Returns(new ArticleFakeDbSet());
+            MockIEIndexContext.Setup(x => x.Articles).Returns(new FakeDbSet<Article>());
 
             NewArticle = new Article
             {
