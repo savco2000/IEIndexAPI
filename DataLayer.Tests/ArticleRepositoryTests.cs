@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Linq;
 using DataLayer.Contexts;
 using DataLayer.DomainModels;
 using DataLayer.Repositories;

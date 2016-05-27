@@ -14,12 +14,12 @@ namespace DataLayer.Repositories
     public class SubjectRepository : ISubjectRepository
     {
         private readonly IUnitOfWork _uow;
-        private readonly IIEIndexContext _context;
+        private readonly IEIndexContext _context;
 
         public SubjectRepository(IUnitOfWork uow)
         {
             _uow = uow;
-            _context = uow.Context as IIEIndexContext;
+            _context = uow.Context as IEIndexContext;
         }
 
         public IQueryable<Subject> All => _context.Subjects;

@@ -14,12 +14,12 @@ namespace DataLayer.Repositories
     public class AuthorRepository : IAuthorRepository
     {
         private readonly IUnitOfWork _uow;
-        private readonly IIEIndexContext _context;
+        private readonly IEIndexContext _context;
 
         public AuthorRepository(IUnitOfWork uow)
         {
             _uow = uow;
-            _context = _uow.Context as IIEIndexContext;
+            _context = _uow.Context as IEIndexContext;
         }
         
         public IQueryable<Author> All => _context.Authors;
