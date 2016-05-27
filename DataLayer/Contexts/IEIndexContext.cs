@@ -6,23 +6,23 @@ namespace DataLayer.Contexts
 {
     public interface IIEIndexContext : IContext
     {
-        IDbSet<Article> Articles { get; }
-        IDbSet<Author> Authors { get; }
-        IDbSet<Subject> Subjects { get; }
+        DbSet<Article> Articles { get; }
+        DbSet<Author> Authors { get; }
+        DbSet<Subject> Subjects { get; }
     }
 
     public class IEIndexContext : BaseContext<IEIndexContext>, IIEIndexContext
     {
-        public IDbSet<Article> Articles { get; set; }
-        public IDbSet<Author> Authors { get; set; }
-        public IDbSet<Subject> Subjects { get; set; }
+        public virtual DbSet<Article> Articles { get; set; }
+        public virtual DbSet<Author> Authors { get; set; }
+        public virtual DbSet<Subject> Subjects { get; set; }
 
-        public void SetModified(object entity)
+        public virtual void SetModified(object entity)
         {
             Entry(entity).State = EntityState.Modified;
         }
 
-        public void SetAdd(object entity)
+        public virtual void SetAdd(object entity)
         {
             Entry(entity).State = EntityState.Added;
         }

@@ -1,23 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using DataLayer.Contexts;
 using DataLayer.DomainModels;
-using DataLayer.FakesForTesting;
 using Moq;
 
 namespace DataLayer.Tests
 {
     public class ArticleRepositoryTestsFixture
     {
-        public Mock<IIEIndexContext> MockIEIndexContext { get; set; }
+        public Mock<IEIndexContext> MockContext { get; set; }
         public Article NewArticle { get; set; }
         public Article ExistingArticle { get; set; }
 
         public ArticleRepositoryTestsFixture()
         {
-            MockIEIndexContext = new Mock<IIEIndexContext>();
-            MockIEIndexContext.Setup(x => x.Articles).Returns(new FakeDbSet<Article>());
-
             NewArticle = new Article
             {
                 Title = "All-in-One Comprehensive Immigration Reform",
@@ -129,9 +126,23 @@ namespace DataLayer.Tests
                         subjects.Single(x => x.Name == "Global Citizenship")
                     }
                 }
-            };
+            }.AsQueryable();
 
-            articles.ForEach(article => MockIEIndexContext.Object.Articles.Add(article));
+            var mockSet = new Mock<DbSet<Article>>();
+            mockSet.As<IQueryable<Article>>().Setup(m => m.Provider).Returns(articles.Provider);
+            mockSet.As<IQueryable<Article>>().Setup(m => m.Expression).Returns(articles.Expression);
+            mockSet.As<IQueryable<Article>>().Setup(m => m.ElementType).Returns(articles.ElementType);
+            mockSet.As<IQueryable<Article>>().Setup(m => m.GetEnumerator()).Returns(articles.GetEnumerator());
+
+            mockSet.Setup(x => x.Find(It.IsAny<object[]>()))
+                .Returns((object[] keyValues) =>
+                {
+                    var keyValue = keyValues.FirstOrDefault();
+                    return keyValue != null ? articles.SingleOrDefault(article => article.Id == (int)keyValue) : null;
+                });
+
+            MockContext = new Mock<IEIndexContext>();
+            MockContext.Setup(m => m.Articles).Returns(mockSet.Object);
         }
     }
 }
