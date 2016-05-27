@@ -10,15 +10,9 @@ namespace DataLayer.Contexts
         public virtual DbSet<Author> Authors { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
 
-        public virtual void SetModified(object entity)
-        {
-            Entry(entity).State = EntityState.Modified;
-        }
+        public virtual void SetModified(object entity) => Entry(entity).State = EntityState.Modified;
 
-        public virtual void SetAdd(object entity)
-        {
-            Entry(entity).State = EntityState.Added;
-        }
+        public virtual void SetAdd(object entity) => Entry(entity).State = EntityState.Added;
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
