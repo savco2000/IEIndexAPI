@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{64BA394F-1A51-48D3-8CE4-818961340678}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer.Tests", "DataLayer.Tests\DataLayer.Tests.csproj", "{8305BAB7-4E33-4F3F-AAD1-77FB639CAB87}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{64BA394F-1A51-48D3-8CE4-818961340678}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64BA394F-1A51-48D3-8CE4-818961340678}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64BA394F-1A51-48D3-8CE4-818961340678}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8305BAB7-4E33-4F3F-AAD1-77FB639CAB87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8305BAB7-4E33-4F3F-AAD1-77FB639CAB87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8305BAB7-4E33-4F3F-AAD1-77FB639CAB87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8305BAB7-4E33-4F3F-AAD1-77FB639CAB87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using DataLayer.Contexts;
 using DataLayer.DomainModels;
 
 namespace DataLayer.Repositories
@@ -13,42 +14,32 @@ namespace DataLayer.Repositories
     public class SubjectRepository : ISubjectRepository
     {
         private readonly IUnitOfWork _uow;
+        private readonly IEIndexContext _context;
 
         public SubjectRepository(IUnitOfWork uow)
         {
             _uow = uow;
+            _context = uow.Context as IEIndexContext;
         }
 
-        public IQueryable<Subject> All => _uow.Context.Subjects;
+        public IQueryable<Subject> All => _context.Subjects;
 
-        public IQueryable<Subject> AllIncluding(params Expression<Func<Subject, object>>[] includeProperties)
-        {
-            var query = _uow.Context.Subjects.AsQueryable();
-            foreach (var includeProperty in includeProperties)
-            {
-                query = query.Include(includeProperty);
-            }
+        public IQueryable<Subject> AllIncluding(params Expression<Func<Subject, object>>[] includeProperties) => 
+            includeProperties.Aggregate(_context.Subjects.AsQueryable(), (current, includeProperty) => current.Include(includeProperty));
 
-            return query;
-        }
+        public Subject Find(int id) => _context.Subjects.Find(id);
 
-        public Subject Find(int id) => _uow.Context.Subjects.Find(id);
-
-        public void InsertGraph(Subject subjectGraph) => _uow.Context.Subjects.Add(subjectGraph);
+        public void InsertGraph(Subject subjectGraph) => _context.Subjects.Add(subjectGraph);
 
         public void InsertOrUpdate(Subject subject)
         {
             if (subject.IsNewEntity)
-            {
-                _uow.Context.Entry(subject).State = EntityState.Added;
-            }
+                _context.SetAdd(subject);
             else
-            {
-                _uow.Context.Entry(subject).State = EntityState.Modified;
-            }
+                _context.SetModified(subject);
         }
 
-        public void Delete(Subject subject) => _uow.Context.Subjects.Remove(subject);
+        public void Delete(Subject subject) => _context.Subjects.Remove(subject);
 
         public void Save() => _uow.Save();
     }
