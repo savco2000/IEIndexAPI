@@ -89,10 +89,13 @@ namespace DataLayer.Tests
                 var sut = new ArticleRepository(uow);
 
                 sut.InsertOrUpdate(_newArticle);
+                sut.Save();
 
                 _mockContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Once);
                 _mockContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Never);
             }
+
+            _mockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
     }
 
@@ -115,10 +118,13 @@ namespace DataLayer.Tests
                 var sut = new ArticleRepository(uow);
 
                 sut.InsertOrUpdate(_existingArticle);
+                sut.Save();
 
                 _mockContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Never);
                 _mockContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Once);
             }
+
+            _mockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
     }
 }
