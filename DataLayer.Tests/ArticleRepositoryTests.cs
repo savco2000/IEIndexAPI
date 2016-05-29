@@ -1,32 +1,33 @@
-﻿using System.Linq;
-using DataLayer.Contexts;
+﻿using DataLayer.Contexts;
 using DataLayer.DomainModels;
 using DataLayer.Repositories;
 using Moq;
 using Xunit;
+using System.Linq;
 
 namespace DataLayer.Tests
 {
     public class when_querying_for_articles : IClassFixture<ArticleRepositoryTestsFixture>
     {
-        private readonly Mock<IEIndexContext> _mockContext;
+        private readonly ArticleRepositoryTestsFixture _fixture;
 
         public when_querying_for_articles(ArticleRepositoryTestsFixture fixture)
         {
-            _mockContext = fixture.MockContext;
+            fixture.MockContext.ResetCalls();
+            _fixture = fixture;
         }
 
         [Fact]
         public void all_should_return_all_the_articles()
         {
-            using (var uow = new UnitOfWork<IEIndexContext>(_mockContext.Object))
+            using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
                 var sut = new ArticleRepository(uow);
 
                 const int expectedCount = 5;
                 var allArticles = sut.All;
 
-                _mockContext.VerifyAll();
+                _fixture.MockContext.VerifyAll();
 
                 Assert.Equal(expectedCount, allArticles.Count());
             }
@@ -35,7 +36,7 @@ namespace DataLayer.Tests
         [Fact]
         public void allincluding_should_return_all_the_articles()
         {
-            using (var uow = new UnitOfWork<IEIndexContext>(_mockContext.Object))
+            using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
                 var sut = new ArticleRepository(uow);
 
@@ -45,7 +46,7 @@ namespace DataLayer.Tests
 
                 var actualCount = allArticles.Count();
 
-                _mockContext.VerifyAll();
+                _fixture.MockContext.VerifyAll();
 
                 Assert.Equal(expectedCount, actualCount);
             }
@@ -54,14 +55,14 @@ namespace DataLayer.Tests
         [Fact]
         public void find_should_return_the_correct_article()
         {
-            using (var uow = new UnitOfWork<IEIndexContext>(_mockContext.Object))
+            using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
                 var sut = new ArticleRepository(uow);
                 const int expectedId = 2;
                 const string expectedTitle = "From Undocumented Immigrant to Brain Surgeon: An Interview with Alfredo Quiñones-Hinojosa";
                 var article = sut.Find(expectedId);
 
-                _mockContext.VerifyAll();
+                _fixture.MockContext.VerifyAll();
 
                 Assert.NotNull(article);
                 Assert.Equal(expectedId, article.Id);
@@ -72,59 +73,75 @@ namespace DataLayer.Tests
 
     public class when_creating_a_new_article : IClassFixture<ArticleRepositoryTestsFixture>
     {
-        private readonly Mock<IEIndexContext> _mockContext;
-        private readonly Article _newArticle;
+        private readonly ArticleRepositoryTestsFixture _fixture;
 
         public when_creating_a_new_article(ArticleRepositoryTestsFixture fixture)
         {
-            _mockContext = fixture.MockContext;
-            _newArticle = fixture.NewArticle;
+            fixture.MockContext.ResetCalls();
+
+            _fixture = fixture;
         }
 
         [Fact]
         public void insertorupdate_should_persist_new_article()
         {
-            using (var uow = new UnitOfWork<IEIndexContext>(_mockContext.Object))
+            using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
                 var sut = new ArticleRepository(uow);
 
-                sut.InsertOrUpdate(_newArticle);
+                sut.InsertOrUpdate(_fixture.NewArticle);
                 sut.Save();
 
-                _mockContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Once);
-                _mockContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Never);
+                _fixture.MockContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Once);
+                _fixture.MockContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Never);
             }
 
-            _mockContext.Verify(x => x.SaveChanges(), Times.Once);
-        }
-    }
-
-    public class when_updating_an_existing_article : IClassFixture<ArticleRepositoryTestsFixture>
-    {
-        private readonly Mock<IEIndexContext> _mockContext;
-        private readonly Article _existingArticle;
-
-        public when_updating_an_existing_article(ArticleRepositoryTestsFixture fixture)
-        {
-            _mockContext = fixture.MockContext;
-            _existingArticle = fixture.ExistingArticle;
+            _fixture.MockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
 
         [Fact]
         public void insertorupdate_should_update_existing_article()
         {
-            using (var uow = new UnitOfWork<IEIndexContext>(_mockContext.Object))
+            using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
                 var sut = new ArticleRepository(uow);
 
-                sut.InsertOrUpdate(_existingArticle);
+                sut.InsertOrUpdate(_fixture.ExistingArticle);
                 sut.Save();
 
-                _mockContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Never);
-                _mockContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Once);
+                _fixture.MockContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Never);
+                _fixture.MockContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Once);
             }
 
-            _mockContext.Verify(x => x.SaveChanges(), Times.Once);
+            _fixture.MockContext.Verify(x => x.SaveChanges(), Times.Once);
+        }
+    }
+
+    public class when_updating_an_existing_article : IClassFixture<ArticleRepositoryTestsFixture>
+    {
+        private readonly ArticleRepositoryTestsFixture _fixture;
+
+        public when_updating_an_existing_article(ArticleRepositoryTestsFixture fixture)
+        {
+            fixture.MockContext.ResetCalls();
+            _fixture = fixture;
+        }
+
+        [Fact]
+        public void insertorupdate_should_update_existing_article()
+        {
+            using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
+            {
+                var sut = new ArticleRepository(uow);
+
+                sut.InsertOrUpdate(_fixture.ExistingArticle);
+                sut.Save();
+
+                _fixture.MockContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Never);
+                _fixture.MockContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Once);
+            }
+
+            _fixture.MockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
     }
 }
