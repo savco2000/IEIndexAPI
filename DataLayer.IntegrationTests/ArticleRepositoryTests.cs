@@ -8,6 +8,7 @@ namespace DataLayer.IntegrationTests
 {
 
     [Trait("Category", "ArticleRepository Integration Tests")]
+    [Collection("MyCollection")]
     public class when_querying_for_articles
     {
         [Fact]
@@ -18,10 +19,9 @@ namespace DataLayer.IntegrationTests
             {
                 var sut = new ArticleRepository(uow);
 
-                const int expectedCount = 5;
-                var allArticles = sut.All;
+                var countIsLargerThanOne = sut.All.Count() > 1;
 
-                Assert.Equal(expectedCount, allArticles.Count());
+                Assert.True(countIsLargerThanOne);
             }
         }
 
@@ -32,14 +32,13 @@ namespace DataLayer.IntegrationTests
             using (var uow = new UnitOfWork<IEIndexContext>(context))
             {
                 var sut = new ArticleRepository(uow);
-
-                const int expectedCount = 5;
                
                 var allArticlesWithChildren = sut.AllIncluding();
 
                 var atleastOneArticleHasChildren = allArticlesWithChildren.Any(x => x.Authors.Any() || x.Subjects.Any());
-               
-                Assert.Equal(expectedCount, allArticlesWithChildren.Count());
+                var countIsLargerThanOne = allArticlesWithChildren.Count() > 1;
+
+                Assert.True(countIsLargerThanOne);
                 Assert.True(atleastOneArticleHasChildren);
             }
         }
@@ -63,6 +62,7 @@ namespace DataLayer.IntegrationTests
     }
 
     [Trait("Category", "ArticleRepository Integration Tests")]
+    [Collection("MyCollection")]
     public class when_persisting_an_article
     {
         [Fact]
@@ -137,22 +137,13 @@ namespace DataLayer.IntegrationTests
     }
 
     [Trait("Category", "ArticleRepository Integration Tests")]
+    [Collection("MyCollection")]
     public class when_deleting_an_article
     {
         [Fact]
         public void if_article_exists_then_it_should_be_removed()
         {
             int expectedCount, actualCount;
-
-            var article = new Article
-            {
-                Id = 5,
-                Title = "Building a Literate World",
-                Page = 14,
-                Issue = Issues.Fall,
-                PublicationYear = PublicationYears.Y2013,
-                IsSupplement = false
-            };
 
             using (var context = new IEIndexContext())
             using (var uow = new UnitOfWork<IEIndexContext>(context))
@@ -161,7 +152,7 @@ namespace DataLayer.IntegrationTests
 
                 expectedCount = sut.All.Count() - 1;
 
-                sut.Delete(article);
+                sut.Delete(4);
                 sut.Save();
             }
 

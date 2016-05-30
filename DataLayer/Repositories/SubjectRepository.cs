@@ -39,7 +39,11 @@ namespace DataLayer.Repositories
                 _context.SetModified(subject);
         }
 
-        public void Delete(Subject subject) => _context.Subjects.Remove(subject);
+        public void Delete(int id)
+        {
+            var subject = _context.Subjects.Find(id);
+            _context.Subjects.Remove(subject);
+        }
 
         public void Save() => _uow.Save();
     }
