@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace DataLayer.Tests
 {
+    [Trait("Category","Articles")]
     public class when_querying_for_articles : IClassFixture<ArticleRepositoryTestsFixture>
     {
         private readonly ArticleRepositoryTestsFixture _fixture;
@@ -71,6 +72,7 @@ namespace DataLayer.Tests
         }
     }
 
+    [Trait("Category", "Articles")]
     public class when_creating_a_new_article : IClassFixture<ArticleRepositoryTestsFixture>
     {
         private readonly ArticleRepositoryTestsFixture _fixture;
@@ -117,6 +119,7 @@ namespace DataLayer.Tests
         }
     }
 
+    [Trait("Category", "Articles")]
     public class when_updating_an_existing_article : IClassFixture<ArticleRepositoryTestsFixture>
     {
         private readonly ArticleRepositoryTestsFixture _fixture;
