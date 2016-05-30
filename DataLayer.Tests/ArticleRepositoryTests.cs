@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DataLayer.Tests
 {
-    [Trait("Category","ArticleRepository")]
+    [Trait("Category","ArticleRepository Unit Tests")]
     [Collection("ArticleRepository Collection")]
     public class when_querying_for_articles
     {
@@ -56,7 +56,7 @@ namespace DataLayer.Tests
         }
     }
 
-    [Trait("Category", "ArticleRepository")]
+    [Trait("Category", "ArticleRepository Unit Tests")]
     [Collection("ArticleRepository Collection")]
     public class when_persisting_an_article
     {
@@ -104,7 +104,7 @@ namespace DataLayer.Tests
         }
     }
 
-    [Trait("Category", "ArticleRepository")]
+    [Trait("Category", "ArticleRepository Unit Tests")]
     [Collection("ArticleRepository Collection")]
     public class when_deleting_an_article
     {
