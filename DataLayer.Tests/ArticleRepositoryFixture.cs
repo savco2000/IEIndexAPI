@@ -7,13 +7,14 @@ using Moq;
 
 namespace DataLayer.Tests
 {
-    public class ArticleRepositoryTestsFixture
+    public class ArticleRepositoryFixture
     {
         public Mock<IEIndexContext> MockContext { get; set; }
         public Article NewArticle { get; set; }
         public Article ExistingArticle { get; set; }
+        public IQueryable<Article> Articles { get; set; }
 
-        public ArticleRepositoryTestsFixture()
+        public ArticleRepositoryFixture()
         {
             NewArticle = new Article
             {
@@ -51,7 +52,7 @@ namespace DataLayer.Tests
                 new Subject {Id = 4,Name = "Public Policy" }
             };
 
-            var articles = new List<Article> {
+            Articles = new List<Article> {
                 new Article {
                     Id = 1,
                     Title = "All-in-One Comprehensive Immigration Reform",
@@ -129,16 +130,23 @@ namespace DataLayer.Tests
             }.AsQueryable();
 
             var mockSet = new Mock<DbSet<Article>>();
-            mockSet.As<IQueryable<Article>>().Setup(m => m.Provider).Returns(articles.Provider);
-            mockSet.As<IQueryable<Article>>().Setup(m => m.Expression).Returns(articles.Expression);
-            mockSet.As<IQueryable<Article>>().Setup(m => m.ElementType).Returns(articles.ElementType);
-            mockSet.As<IQueryable<Article>>().Setup(m => m.GetEnumerator()).Returns(articles.GetEnumerator());
+            mockSet.As<IQueryable<Article>>().Setup(m => m.Provider).Returns(Articles.Provider);
+            mockSet.As<IQueryable<Article>>().Setup(m => m.Expression).Returns(Articles.Expression);
+            mockSet.As<IQueryable<Article>>().Setup(m => m.ElementType).Returns(Articles.ElementType);
+            mockSet.As<IQueryable<Article>>().Setup(m => m.GetEnumerator()).Returns(Articles.GetEnumerator());
 
             mockSet.Setup(x => x.Find(It.IsAny<object[]>()))
                 .Returns((object[] keyValues) =>
                 {
                     var keyValue = keyValues.FirstOrDefault();
-                    return keyValue != null ? articles.SingleOrDefault(article => article.Id == (int)keyValue) : null;
+                    return keyValue != null ? Articles.SingleOrDefault(article => article.Id == (int)keyValue) : null;
+                });
+
+            mockSet.Setup(x => x.Remove(It.IsAny<Article>()))
+                .Returns((Article articleToDelete) =>
+                {
+                    Articles = Articles.Where(article => article.Id != articleToDelete.Id);
+                    return articleToDelete;
                 });
 
             MockContext = new Mock<IEIndexContext>();

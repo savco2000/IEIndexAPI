@@ -82,8 +82,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ArticleRepositoryCollection.cs" />
     <Compile Include="ArticleRepositoryTests.cs" />
-    <Compile Include="ArticleRepositoryTestsFixture.cs" />
+    <Compile Include="ArticleRepositoryFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
