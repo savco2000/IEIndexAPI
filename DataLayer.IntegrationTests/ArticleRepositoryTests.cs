@@ -149,10 +149,11 @@ namespace DataLayer.IntegrationTests
             using (var uow = new UnitOfWork<IEIndexContext>(context))
             {
                 var sut = new ArticleRepository(uow);
+                var articleId = sut.All.ToList().LastOrDefault().Id;
 
                 expectedCount = sut.All.Count() - 1;
 
-                sut.Delete(4);
+                sut.Delete(articleId);
                 sut.Save();
             }
 
