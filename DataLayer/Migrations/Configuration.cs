@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace DataLayer.Migrations
 {
-    internal sealed class Configuration : DbMigrationsConfiguration<DataLayer.Contexts.IEIndexContext>
+    public sealed class Configuration : DbMigrationsConfiguration<DataLayer.Contexts.IEIndexContext>
     {
         public Configuration()
         {

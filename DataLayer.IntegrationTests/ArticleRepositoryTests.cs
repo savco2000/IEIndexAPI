@@ -8,7 +8,7 @@ namespace DataLayer.IntegrationTests
 {
 
     [Trait("Category", "ArticleRepository Integration Tests")]
-    [Collection("MyCollection")]
+    [Collection("ArticleRepository Integration Tests Collection")]
     public class when_querying_for_articles
     {
         [Fact]
@@ -46,12 +46,22 @@ namespace DataLayer.IntegrationTests
         [Fact]
         public void a_single_article_should_be_retrieved()
         {
+            int expectedId;
+            string expectedTitle;
+
+            using (var context = new IEIndexContext())
+            using (var uow = new UnitOfWork<IEIndexContext>(context))
+            {
+                var article = new ArticleRepository(uow).All.ToList().First();
+                expectedId = article.Id;
+                expectedTitle = article.Title;
+            }
+
             using (var context = new IEIndexContext())
             using (var uow = new UnitOfWork<IEIndexContext>(context))
             {
                 var sut = new ArticleRepository(uow);
-                const int expectedId = 2;
-                const string expectedTitle = "From Undocumented Immigrant to Brain Surgeon: An Interview with Alfredo Quiñones-Hinojosa";
+                
                 var article = sut.Find(expectedId);
 
                 Assert.NotNull(article);
@@ -62,7 +72,7 @@ namespace DataLayer.IntegrationTests
     }
 
     [Trait("Category", "ArticleRepository Integration Tests")]
-    [Collection("MyCollection")]
+    [Collection("ArticleRepository Integration Tests Collection")]
     public class when_persisting_an_article
     {
         [Fact]
@@ -104,16 +114,14 @@ namespace DataLayer.IntegrationTests
         {
             int expectedCount, actualCount;
 
-            var existingArticle = new Article
+            Article existingArticle;
+
+            using (var context = new IEIndexContext())
+            using (var uow = new UnitOfWork<IEIndexContext>(context))
             {
-                Id = 1,
-                Title = "All-in-One Comprehensive Immigration Reform",
-                Page = 44,
-                Issue = Issues.Winter,
-                PublicationYear = PublicationYears.Y2016,   
-                IsSupplement = true,
-                Hyperlink = "http://www.nafsa.org/_/File/_/ie_julaug13_frontlines.pdf"
-            };
+                existingArticle = new ArticleRepository(uow).All.ToList().First();
+                existingArticle.Title = "This title has been updated during an integration test";
+            }
 
             using (var context = new IEIndexContext())
             using (var uow = new UnitOfWork<IEIndexContext>(context))
@@ -137,7 +145,7 @@ namespace DataLayer.IntegrationTests
     }
 
     [Trait("Category", "ArticleRepository Integration Tests")]
-    [Collection("MyCollection")]
+    [Collection("ArticleRepository Integration Tests Collection")]
     public class when_deleting_an_article
     {
         [Fact]

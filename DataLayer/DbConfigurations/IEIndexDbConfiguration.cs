@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using DataLayer.Contexts;
 
 namespace DataLayer.DbConfigurations
 {
@@ -6,7 +7,7 @@ namespace DataLayer.DbConfigurations
     {
         public IEIndexDbConfiguration()
         {
-            SetDatabaseInitializer(new IEIndexDBInitializer());
+            SetDatabaseInitializer(new NullDatabaseInitializer<IEIndexContext>());
         }
     }
 }
