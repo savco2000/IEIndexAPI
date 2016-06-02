@@ -12,7 +12,7 @@ namespace DataLayer.Repositories
         TEntity Find(int id);
         void InsertGraph(TEntity entity);
         void InsertOrUpdate(TEntity entity);
-        void Delete(TEntity entity);
+        void Delete(int id);
         void Save();
     }
 }

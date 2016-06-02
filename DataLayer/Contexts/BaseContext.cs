@@ -4,12 +4,9 @@ namespace DataLayer.Contexts
 {
     public class BaseContext<TContext> : DbContext where TContext : DbContext
     {
-        static BaseContext()
+        protected BaseContext() : base("name=DefaultConnection")
         {
-            //Configuration.LazyLoadingEnabled = false;
-            Database.SetInitializer<TContext>(null);
+            Configuration.LazyLoadingEnabled = false;
         }
-
-        protected BaseContext() : base("name=DefaultConnection") { }
     }
 }

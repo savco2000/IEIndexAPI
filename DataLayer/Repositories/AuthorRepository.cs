@@ -39,7 +39,11 @@ namespace DataLayer.Repositories
                 _context.SetModified(author);
         }
 
-        public void Delete(Author author) => _context.Authors.Remove(author);
+        public void Delete(int id)
+        {
+            var author = _context.Authors.Find(id);
+            _context.Authors.Remove(author);
+        }
 
         public void Save() => _uow.Save();
     }
