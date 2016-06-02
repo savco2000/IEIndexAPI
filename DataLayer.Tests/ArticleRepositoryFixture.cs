@@ -150,7 +150,7 @@ namespace DataLayer.Tests
                 });
 
             MockContext = new Mock<IEIndexContext>();
-            MockContext.Setup(m => m.Articles).Returns(mockSet.Object);
+            MockContext.Setup(m => m.Set<Article>()).Returns(mockSet.Object);
         }
     }
 }
