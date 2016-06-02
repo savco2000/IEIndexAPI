@@ -146,7 +146,7 @@ namespace DataLayer.Tests
 
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new ArticleRepository(uow);
+                var sut = new Repository<Article>(uow);
 
                 sut.Delete(nonExistingArticleId);
                 sut.Save();
