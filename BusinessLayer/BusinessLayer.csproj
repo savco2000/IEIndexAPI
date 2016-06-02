@@ -53,10 +53,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BindingModels\ArticleSearchBindingModel.cs" />
-    <Compile Include="BindingModels\AuthorSearchBindingModel.cs" />
-    <Compile Include="BindingModels\ISearchBindingModel.cs" />
-    <Compile Include="BindingModels\SubjectSearchBindingModel.cs" />
+    <Compile Include="SearchBindingModels\ArticleSearchBindingModel.cs" />
+    <Compile Include="SearchBindingModels\AuthorSearchBindingModel.cs" />
+    <Compile Include="SearchBindingModels\ISearchBindingModel.cs" />
+    <Compile Include="SearchBindingModels\SubjectSearchBindingModel.cs" />
     <Compile Include="Services\ArticleService.cs" />
     <Compile Include="Services\AuthorService.cs" />
     <Compile Include="Services\IEIndexService.cs" />

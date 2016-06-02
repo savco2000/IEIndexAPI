@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using DataLayer.DomainModels;
 using LinqKit;
 
-namespace BusinessLayer.BindingModels
+namespace BusinessLayer.SearchBindingModels
 {
     public class SubjectSearchBindingModel : ISearchBindingModel<Subject>
     {

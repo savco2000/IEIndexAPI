@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BusinessLayer.BindingModels;
+using BusinessLayer.SearchBindingModels;
 using DataLayer.DomainModels;
 using DataLayer.Repositories;
 using LinqKit;

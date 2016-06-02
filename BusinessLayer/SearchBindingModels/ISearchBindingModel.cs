@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using DataLayer.DomainModels;
 
-namespace BusinessLayer.BindingModels
+namespace BusinessLayer.SearchBindingModels
 {
     public interface ISearchBindingModel<TEntity> where TEntity : Entity
     {
