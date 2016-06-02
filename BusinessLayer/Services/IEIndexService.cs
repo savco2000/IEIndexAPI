@@ -28,9 +28,9 @@ namespace BusinessLayer.Services
 
         public TEntity Find(int id) => Repository.Find(id);
 
-        public void InsertGraph(TEntity articleGraph) => Repository.InsertGraph(articleGraph);
+        public void InsertGraph(TEntity entityGraph) => Repository.InsertGraph(entityGraph);
 
-        public void InsertOrUpdate(TEntity article) => Repository.InsertOrUpdate(article);
+        public void InsertOrUpdate(TEntity entity) => Repository.InsertOrUpdate(entity);
 
         public void Delete(int id) => Repository.Delete(id);
     }
