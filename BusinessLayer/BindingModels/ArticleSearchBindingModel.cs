@@ -5,7 +5,14 @@ using LinqKit;
 
 namespace BusinessLayer.BindingModels
 {
-    public class ArticleSearchBindingModel
+    public interface ISearchBindingModel<TEntity> where TEntity : Entity
+    {
+        string PageSize { get; set; }
+        string PageNumber { get; set; }
+        Expression<Func<TEntity, bool>> GetPredicate();
+    }
+
+    public class ArticleSearchBindingModel : ISearchBindingModel<Article>
     {
         public string PageSize { get; set; }
         public string PageNumber { get; set; }

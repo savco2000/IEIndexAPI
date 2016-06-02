@@ -54,8 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BindingModels\ArticleSearchBindingModel.cs" />
-    <Compile Include="IEIndexService.cs" />
+    <Compile Include="Services\ArticleService.cs" />
+    <Compile Include="Services\AuthorService.cs" />
+    <Compile Include="Services\IEIndexService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\SubjectService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataLayer\DataLayer.csproj">
