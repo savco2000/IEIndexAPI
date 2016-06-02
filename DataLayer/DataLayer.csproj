@@ -71,7 +71,6 @@
     <Compile Include="DomainModels\Enums.cs" />
     <Compile Include="DomainModels\Subject.cs" />
     <Compile Include="Contexts\IEIndexContext.cs" />
-    <Compile Include="FakesForTesting\FakeDbSet.cs" />
     <Compile Include="Migrations\201605301045534_Initial.cs" />
     <Compile Include="Migrations\201605301045534_Initial.Designer.cs">
       <DependentUpon>201605301045534_Initial.cs</DependentUpon>
