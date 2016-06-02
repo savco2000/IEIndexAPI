@@ -5,13 +5,6 @@ using LinqKit;
 
 namespace BusinessLayer.BindingModels
 {
-    public interface ISearchBindingModel<TEntity> where TEntity : Entity
-    {
-        string PageSize { get; set; }
-        string PageNumber { get; set; }
-        Expression<Func<TEntity, bool>> GetPredicate();
-    }
-
     public class ArticleSearchBindingModel : ISearchBindingModel<Article>
     {
         public string PageSize { get; set; }
@@ -26,7 +19,7 @@ namespace BusinessLayer.BindingModels
             var predicate = PredicateBuilder.True<Article>();
 
             if (!string.IsNullOrWhiteSpace(Title))
-                predicate = predicate.And(p => p.Title == Title);
+                predicate = predicate.And(p => p.Title.ToLower() == Title.ToLower());
 
             var issue = (Issues)Enum.Parse(typeof(Issues), Issue);
             if (!string.IsNullOrWhiteSpace(Issue))
