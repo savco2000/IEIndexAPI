@@ -22,7 +22,7 @@ namespace BusinessLayer.Services
                        .Skip(pageNumber * pageSize - pageSize)
                        .Take(pageSize)
                        .AsExpandable()
-                       .Where(searchParameters.GetPredicate())
+                       .Where(searchParameters.SearchFilter())
                        .ToList();
        
         public abstract List<TEntity> GetEntitiesWithChildren(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber);

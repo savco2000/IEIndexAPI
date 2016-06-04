@@ -13,7 +13,7 @@ namespace BusinessLayer.SearchBindingModels
         public string LastName { get; set; }
         public string Suffix { get; set; }
         
-        public Expression<Func<Author, bool>> GetPredicate()
+        public Expression<Func<Author, bool>> SearchFilter()
         {
             var predicate = PredicateBuilder.True<Author>();
 

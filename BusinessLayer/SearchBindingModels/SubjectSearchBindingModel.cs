@@ -10,7 +10,7 @@ namespace BusinessLayer.SearchBindingModels
         public string PageSize { get; set; }
         public string PageNumber { get; set; }
         public string Name { get; set; }
-        public Expression<Func<Subject, bool>> GetPredicate()
+        public Expression<Func<Subject, bool>> SearchFilter()
         {
             var predicate = PredicateBuilder.True<Subject>();
 

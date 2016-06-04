@@ -20,7 +20,7 @@ namespace BusinessLayer.Services
                 .Skip(pageNumber * pageSize - pageSize)
                 .Take(pageSize)
                 .AsExpandable()
-                .Where(searchParameters.GetPredicate())
+                .Where(searchParameters.SearchFilter())
                 .ToList();
     }
 }

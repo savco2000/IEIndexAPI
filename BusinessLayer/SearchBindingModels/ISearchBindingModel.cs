@@ -8,6 +8,6 @@ namespace BusinessLayer.SearchBindingModels
     {
         string PageSize { get; set; }
         string PageNumber { get; set; }
-        Expression<Func<TEntity, bool>> GetPredicate();
+        Expression<Func<TEntity, bool>> SearchFilter();
     }
 }
