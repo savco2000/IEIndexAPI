@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BusinessLayer.SearchBindingModels;
+using DataLayer;
 using DataLayer.DomainModels;
 using DataLayer.Repositories;
 using LinqKit;
@@ -11,9 +12,9 @@ namespace BusinessLayer.Services
     {
         protected readonly Repository<TEntity> Repository;
 
-        protected IEIndexService(Repository<TEntity> repository)
+        protected IEIndexService(IUnitOfWork uow)
         {
-            Repository = repository;
+            Repository = new Repository<TEntity>(uow);
         }
 
         public List<TEntity> GetEntities(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber) => Repository.All

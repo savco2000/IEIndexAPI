@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BusinessLayer.SearchBindingModels;
+using DataLayer;
 using DataLayer.DomainModels;
-using DataLayer.Repositories;
 using LinqKit;
 
 namespace BusinessLayer.Services
 {
     public class SubjectService : IEIndexService<Subject>
     {
-        public SubjectService(Repository<Subject> repository) : base(repository)
+        public SubjectService(IUnitOfWork uow) : base(uow)
         {
         }
 
