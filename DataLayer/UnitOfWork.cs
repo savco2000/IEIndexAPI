@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using DataLayer.Contexts;
 
 namespace DataLayer
@@ -11,7 +12,7 @@ namespace DataLayer
 
     public class UnitOfWork<TContext> : IUnitOfWork where TContext : IContext, new()
     {
-        private readonly IContext _context;
+        private IContext _context;
         private bool _isAlive = true;
         private bool _isCommitted;
 
@@ -36,6 +37,14 @@ namespace DataLayer
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+
             if (!_isAlive) return;
 
             _isAlive = false;
@@ -46,7 +55,11 @@ namespace DataLayer
             }
             finally
             {
-                _context.Dispose();
+                if (_context != null)
+                {
+                    _context.Dispose();
+                    _context = null;
+                }
             }
         }
     }
