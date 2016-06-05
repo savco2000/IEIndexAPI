@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using DataLayer.Contexts;
 using DataLayer.DomainModels;
@@ -15,6 +16,10 @@ namespace DataLayer.Tests.CollectionFixtures
 
         public AuthorRepositoryFixture()
         {
+            NewAuthor = new Author { FirstName = "Jon", LastName = "Snow" };
+
+            ExistingAuthor = new Author { Id = 1, FirstName = "Stuart", LastName = "Anderson", Suffix = Suffixes.Jr };
+
             var subjects = new List<Subject>
             {
                 new Subject {Id = 1,Name = "Ethics" },
@@ -130,6 +135,29 @@ namespace DataLayer.Tests.CollectionFixtures
                     }
                 }
             }.AsQueryable();
+
+            var mockSet = new Mock<DbSet<Author>>();
+            mockSet.As<IQueryable<Author>>().Setup(m => m.Provider).Returns(Authors.Provider);
+            mockSet.As<IQueryable<Author>>().Setup(m => m.Expression).Returns(Authors.Expression);
+            mockSet.As<IQueryable<Author>>().Setup(m => m.ElementType).Returns(Authors.ElementType);
+            mockSet.As<IQueryable<Author>>().Setup(m => m.GetEnumerator()).Returns(Authors.GetEnumerator());
+
+            mockSet.Setup(x => x.Find(It.IsAny<object[]>()))
+                .Returns((object[] keyValues) =>
+                {
+                    var keyValue = keyValues.FirstOrDefault();
+                    return keyValue != null ? Authors.SingleOrDefault(article => article.Id == (int)keyValue) : null;
+                });
+
+            mockSet.Setup(x => x.Remove(It.IsAny<Author>()))
+                .Returns((Author authorToDelete) =>
+                {
+                    Authors = Authors.Where(author => author.Id != authorToDelete.Id);
+                    return authorToDelete;
+                });
+
+            MockContext = new Mock<IEIndexContext>();
+            MockContext.Setup(m => m.Set<Author>()).Returns(mockSet.Object);
         }
     }
 }
