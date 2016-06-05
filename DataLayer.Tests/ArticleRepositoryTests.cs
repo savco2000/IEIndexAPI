@@ -4,6 +4,7 @@ using DataLayer.Repositories;
 using Moq;
 using Xunit;
 using System.Linq;
+using DataLayer.Tests.CollectionFixtures;
 
 namespace DataLayer.Tests
 {
@@ -24,7 +25,7 @@ namespace DataLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new ArticleRepository(uow);
+                var sut = new Repository<Article>(uow);
 
                 var expectedCount = _fixture.Articles.Count();
                 var allArticles = sut.All;
@@ -42,7 +43,7 @@ namespace DataLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new ArticleRepository(uow);
+                var sut = new Repository<Article>(uow);
                 const int expectedId = 2;
                 const string expectedTitle = "From Undocumented Immigrant to Brain Surgeon: An Interview with Alfredo Quiñones-Hinojosa";
                 var article = sut.Find(expectedId);
@@ -74,7 +75,7 @@ namespace DataLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new ArticleRepository(uow);
+                var sut = new Repository<Article>(uow);
 
                 sut.InsertOrUpdate(_fixture.NewArticle);
                 sut.Save();
@@ -91,7 +92,7 @@ namespace DataLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new ArticleRepository(uow);
+                var sut = new Repository<Article>(uow);
 
                 sut.InsertOrUpdate(_fixture.ExistingArticle);
                 sut.Save();
@@ -121,13 +122,13 @@ namespace DataLayer.Tests
         public void if_article_exists_then_it_should_be_removed()
         {
             var expectedCount = _fixture.Articles.Count() - 1;
-            var article = _fixture.Articles.FirstOrDefault();
+            var articleId = _fixture.Articles.First().Id;
 
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new ArticleRepository(uow);
+                var sut = new Repository<Article>(uow);
 
-                sut.Delete(5);
+                sut.Delete(articleId);
                 sut.Save();
                 
                 var actualCount = _fixture.Articles.Count();
@@ -138,32 +139,25 @@ namespace DataLayer.Tests
             _fixture.MockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
 
-        //[Fact]
-        //public void if_article_does_not_exist_then_nothing_should_happen()
-        //{
-        //    var expectedCount = _fixture.Articles.Count();
-        //    var nonExistingArticle = new Article
-        //    {
-        //        Title = "Hello World!",
-        //        Page = 16,
-        //        Issue = Issues.Mar_Apr,
-        //        PublicationYear = PublicationYears.Y2013,
-        //        IsSupplement = true
-        //    };
+        [Fact]
+        public void if_article_does_not_exist_then_nothing_should_happen()
+        {
+            var expectedCount = _fixture.Articles.Count();
+            const int nonExistingArticleId = 99999999;
 
-        //    using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
-        //    {
-        //        var sut = new ArticleRepository(uow);
+            using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
+            {
+                var sut = new Repository<Article>(uow);
 
-        //        sut.Delete(nonExistingArticle);
-        //        sut.Save();
+                sut.Delete(nonExistingArticleId);
+                sut.Save();
 
-        //        var actualCount = _fixture.Articles.Count();
+                var actualCount = _fixture.Articles.Count();
 
-        //        Assert.Equal(expectedCount, actualCount);
-        //    }
+                Assert.Equal(expectedCount, actualCount);
+            }
 
-        //    _fixture.MockContext.Verify(x => x.SaveChanges(), Times.Once);
-        //}
+            _fixture.MockContext.Verify(x => x.SaveChanges(), Times.Once);
+        }
     }
 }

@@ -5,7 +5,7 @@ using DataLayer.Contexts;
 using DataLayer.DomainModels;
 using Moq;
 
-namespace DataLayer.Tests
+namespace DataLayer.Tests.CollectionFixtures
 {
     public class ArticleRepositoryFixture
     {
@@ -150,7 +150,7 @@ namespace DataLayer.Tests
                 });
 
             MockContext = new Mock<IEIndexContext>();
-            MockContext.Setup(m => m.Articles).Returns(mockSet.Object);
+            MockContext.Setup(m => m.Set<Article>()).Returns(mockSet.Object);
         }
     }
 }

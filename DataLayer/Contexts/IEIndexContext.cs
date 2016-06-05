@@ -1,7 +1,6 @@
 ﻿using System.Data.Entity;
 using DataLayer.DomainModels;
 using DataLayer.DomainModels.EntityConfigurations;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace DataLayer.Contexts
 {
