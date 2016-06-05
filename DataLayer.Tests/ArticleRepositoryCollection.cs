@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using DataLayer.Tests.TestFixtures;
+using Xunit;
 
 namespace DataLayer.Tests
 {

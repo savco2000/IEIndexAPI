@@ -84,7 +84,8 @@
   <ItemGroup>
     <Compile Include="ArticleRepositoryCollection.cs" />
     <Compile Include="ArticleRepositoryTests.cs" />
-    <Compile Include="ArticleRepositoryFixture.cs" />
+    <Compile Include="TestFixtures\ArticleRepositoryFixture.cs" />
+    <Compile Include="TestFixtures\AuthorRepositoryFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

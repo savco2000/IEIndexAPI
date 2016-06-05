@@ -1,49 +1,20 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using DataLayer.Contexts;
 using DataLayer.DomainModels;
 using Moq;
 
-namespace DataLayer.Tests
+namespace DataLayer.Tests.TestFixtures
 {
-    public class ArticleRepositoryFixture
+    public class AuthorRepositoryFixture
     {
         public Mock<IEIndexContext> MockContext { get; set; }
-        public Article NewArticle { get; set; }
-        public Article ExistingArticle { get; set; }
-        public IQueryable<Article> Articles { get; set; }
+        public Author NewAuthor { get; set; }
+        public Author ExistingAuthor { get; set; }
+        public IQueryable<Author> Authors { get; set; }
 
-        public ArticleRepositoryFixture()
+        public AuthorRepositoryFixture()
         {
-            NewArticle = new Article
-            {
-                Title = "All-in-One Comprehensive Immigration Reform",
-                Page = 4,
-                Issue = Issues.Fall,
-                PublicationYear = PublicationYears.Y2013,
-                IsSupplement = false,
-                Hyperlink = "http://www.nafsa.org/_/File/_/ie_julaug13_frontlines.pdf"
-            };
-
-            ExistingArticle = new Article
-            {
-                Id = 1,
-                Title = "All-in-One Comprehensive Immigration Reform",
-                Page = 4,
-                Issue = Issues.Fall,
-                PublicationYear = PublicationYears.Y2013,
-                IsSupplement = false,
-                Hyperlink = "http://www.nafsa.org/_/File/_/ie_julaug13_frontlines.pdf"
-            };
-
-            var authors = new List<Author>
-            {
-                new Author { Id = 1, FirstName = "Stuart", LastName = "Anderson" },
-                new Author { Id = 2,FirstName = "Elaina", LastName = "Loveland" },
-                new Author { Id = 3,FirstName = "Susan", LastName = "Ladika" }
-            };
-
             var subjects = new List<Subject>
             {
                 new Subject {Id = 1,Name = "Ethics" },
@@ -52,7 +23,8 @@ namespace DataLayer.Tests
                 new Subject {Id = 4,Name = "Public Policy" }
             };
 
-            Articles = new List<Article> {
+            var articles = new List<Article>
+            {
                 new Article {
                     Id = 1,
                     Title = "All-in-One Comprehensive Immigration Reform",
@@ -61,7 +33,6 @@ namespace DataLayer.Tests
                     PublicationYear = PublicationYears.Y2013,
                     IsSupplement = false,
                     Hyperlink = "http://www.nafsa.org/_/File/_/ie_julaug13_frontlines.pdf",
-                    Authors = new List<Author> { authors.Single(x => x.FirstName == "Stuart" && x.LastName == "Anderson") },
                     Subjects = new List<Subject>
                     {
                         subjects.Single(x => x.Name == "Higher Education"),
@@ -76,7 +47,6 @@ namespace DataLayer.Tests
                     PublicationYear = PublicationYears.Y2013,
                     IsSupplement = false,
                     Hyperlink = "http://www.nafsa.org/_/File/_/ie_julaug13_voices.pdf",
-                    Authors = new List<Author> {authors.Single(x => x.FirstName == "Elaina" && x.LastName == "Loveland") },
                     Subjects = new List<Subject>
                     {
                         subjects.Single(x => x.Name == "Higher Education"),
@@ -92,7 +62,6 @@ namespace DataLayer.Tests
                     PublicationYear = PublicationYears.Y2013,
                     IsSupplement = false,
                     Hyperlink = "http://www.nafsa.org/_/File/_/ie_mayjun13_voices.pdf",
-                    Authors = new List<Author> {authors.Single(x => x.FirstName == "Elaina" && x.LastName == "Loveland") },
                     Subjects = new List<Subject>
                     {
                         subjects.Single(x => x.Name == "Ethics"),
@@ -106,7 +75,6 @@ namespace DataLayer.Tests
                     Issue = Issues.Spring,
                     PublicationYear = PublicationYears.Y2013,
                     IsSupplement = false,
-                    Authors = new List<Author> {authors.Single(x => x.FirstName == "Elaina" && x.LastName == "Loveland") },
                     Subjects = new List<Subject>
                     {
                         subjects.Single(x => x.Name == "Higher Education"),
@@ -120,37 +88,48 @@ namespace DataLayer.Tests
                     Issue = Issues.Fall,
                     PublicationYear = PublicationYears.Y2013,
                     IsSupplement = false,
-                    Authors = new List<Author> {authors.Single(x => x.FirstName == "Susan" && x.LastName == "Ladika") },
                     Subjects = new List<Subject>
                     {
                         subjects.Single(x => x.Name == "Higher Education"),
                         subjects.Single(x => x.Name == "Global Citizenship")
                     }
                 }
+            };
+
+            Authors = new List<Author>
+            {
+                new Author
+                {
+                    Id = 1,
+                    FirstName = "Stuart",
+                    LastName = "Anderson",
+                    Articles = new List<Article>
+                    {
+                        articles.Single(x => x.Title == "All-in-One Comprehensive Immigration Reform")
+                    }
+                },
+                new Author
+                {
+                    Id = 2,
+                    FirstName = "Elaina",
+                    LastName = "Loveland",
+                    Articles = new List<Article>
+                    {
+                        articles.Single(x => x.Title == "From Undocumented Immigrant to Brain Surgeon: An Interview with Alfredo Quiñones-Hinojosa"),
+                        articles.Single(x => x.Title == "A Champion for Development, Security, and Human Rights: An Interview with Kofi Annan")
+                    }
+                },
+                new Author
+                {
+                    Id = 3,
+                    FirstName = "Susan",
+                    LastName = "Ladika",
+                    Articles = new List<Article>
+                    {
+                        articles.Single(x => x.Title == "Building a Literate World")
+                    }
+                }
             }.AsQueryable();
-
-            var mockSet = new Mock<DbSet<Article>>();
-            mockSet.As<IQueryable<Article>>().Setup(m => m.Provider).Returns(Articles.Provider);
-            mockSet.As<IQueryable<Article>>().Setup(m => m.Expression).Returns(Articles.Expression);
-            mockSet.As<IQueryable<Article>>().Setup(m => m.ElementType).Returns(Articles.ElementType);
-            mockSet.As<IQueryable<Article>>().Setup(m => m.GetEnumerator()).Returns(Articles.GetEnumerator());
-
-            mockSet.Setup(x => x.Find(It.IsAny<object[]>()))
-                .Returns((object[] keyValues) =>
-                {
-                    var keyValue = keyValues.FirstOrDefault();
-                    return keyValue != null ? Articles.SingleOrDefault(article => article.Id == (int)keyValue) : null;
-                });
-
-            mockSet.Setup(x => x.Remove(It.IsAny<Article>()))
-                .Returns((Article articleToDelete) =>
-                {
-                    Articles = Articles.Where(article => article.Id != articleToDelete.Id);
-                    return articleToDelete;
-                });
-
-            MockContext = new Mock<IEIndexContext>();
-            MockContext.Setup(m => m.Set<Article>()).Returns(mockSet.Object);
         }
     }
 }
