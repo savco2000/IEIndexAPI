@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using DataLayer.Contexts;
 using DataLayer.DomainModels;
@@ -83,7 +84,7 @@ namespace DataLayer.Tests.CollectionFixtures
                 }
             };
 
-            var subjects = new List<Subject>
+            Subjects = new List<Subject>
             {
                 new Subject
                 {
@@ -109,7 +110,30 @@ namespace DataLayer.Tests.CollectionFixtures
                     Name = "Public Policy",
                     Articles = new List<Article> { articles.Single(x => x.Title == "A Perspective on Communism's Collapse and European Higher Education") }
                 }
-            };
+            }.AsQueryable();
+
+            var mockSet = new Mock<DbSet<Subject>>();
+            mockSet.As<IQueryable<Subject>>().Setup(m => m.Provider).Returns(Subjects.Provider);
+            mockSet.As<IQueryable<Subject>>().Setup(m => m.Expression).Returns(Subjects.Expression);
+            mockSet.As<IQueryable<Subject>>().Setup(m => m.ElementType).Returns(Subjects.ElementType);
+            mockSet.As<IQueryable<Subject>>().Setup(m => m.GetEnumerator()).Returns(Subjects.GetEnumerator());
+
+            mockSet.Setup(x => x.Find(It.IsAny<object[]>()))
+                .Returns((object[] keyValues) =>
+                {
+                    var keyValue = keyValues.FirstOrDefault();
+                    return keyValue != null ? Subjects.SingleOrDefault(article => article.Id == (int)keyValue) : null;
+                });
+
+            mockSet.Setup(x => x.Remove(It.IsAny<Subject>()))
+                .Returns((Subject subjectToDelete) =>
+                {
+                    Subjects = Subjects.Where(author => author.Id != subjectToDelete.Id);
+                    return subjectToDelete;
+                });
+
+            MockContext = new Mock<IEIndexContext>();
+            MockContext.Setup(m => m.Set<Subject>()).Returns(mockSet.Object);
         }
     }
 }
