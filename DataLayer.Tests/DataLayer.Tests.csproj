@@ -88,6 +88,8 @@
     <Compile Include="CollectionFixtures\ArticleRepositoryFixture.cs" />
     <Compile Include="CollectionFixtures\AuthorRepositoryCollection.cs" />
     <Compile Include="CollectionFixtures\AuthorRepositoryFixture.cs" />
+    <Compile Include="CollectionFixtures\SubjectRepositoryCollection.cs" />
+    <Compile Include="CollectionFixtures\SubjectRepositoryFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
