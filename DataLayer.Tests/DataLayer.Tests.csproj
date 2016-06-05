@@ -82,10 +82,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ArticleRepositoryCollection.cs" />
+    <Compile Include="CollectionFixtures\ArticleRepositoryCollection.cs" />
     <Compile Include="ArticleRepositoryTests.cs" />
-    <Compile Include="TestFixtures\ArticleRepositoryFixture.cs" />
-    <Compile Include="TestFixtures\AuthorRepositoryFixture.cs" />
+    <Compile Include="CollectionFixtures\ArticleRepositoryFixture.cs" />
+    <Compile Include="CollectionFixtures\AuthorRepositoryCollection.cs" />
+    <Compile Include="CollectionFixtures\AuthorRepositoryFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

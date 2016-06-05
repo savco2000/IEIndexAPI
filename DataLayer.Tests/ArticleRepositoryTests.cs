@@ -4,7 +4,7 @@ using DataLayer.Repositories;
 using Moq;
 using Xunit;
 using System.Linq;
-using DataLayer.Tests.TestFixtures;
+using DataLayer.Tests.CollectionFixtures;
 
 namespace DataLayer.Tests
 {
