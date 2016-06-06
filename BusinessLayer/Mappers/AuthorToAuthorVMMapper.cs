@@ -5,9 +5,9 @@ using DataLayer.DomainModels;
 
 namespace BusinessLayer.Mappers
 {
-    public class AuthorToAuthorVMMapper
+    public static class AuthorToAuthorVMMapper
     {
-        public AuthorVM Map(Author source)
+        public static AuthorVM Map(Author source)
         {
             var target = new AuthorVM
             {
@@ -28,7 +28,7 @@ namespace BusinessLayer.Mappers
             return target;
         }
 
-        public AuthorVM Map(Author source, params object[] options)
+        public static AuthorVM Map(Author source, params object[] options)
         {
             throw new NotImplementedException();
         }

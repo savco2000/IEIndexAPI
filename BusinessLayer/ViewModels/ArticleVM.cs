@@ -10,8 +10,8 @@ namespace BusinessLayer.ViewModels
         public string PublicationYear { get; set; }
         public bool IsSupplement { get; set; }
         public string Hyperlink { get; set; }
-        public IList<AuthorVM> Authors { get; set; }
-        public IList<SubjectVM> Subjects { get; set; }
+        public IEnumerable<AuthorVM> Authors { get; set; }
+        public IEnumerable<SubjectVM> Subjects { get; set; }
 
         public ArticleVM()
         {

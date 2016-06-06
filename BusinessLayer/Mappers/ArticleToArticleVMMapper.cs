@@ -5,9 +5,9 @@ using DataLayer.DomainModels;
 
 namespace BusinessLayer.Mappers
 {
-    public class ArticleToArticleVMMapper
+    public static class ArticleToArticleVMMapper
     {
-        public ArticleVM Map(Article source)
+        public static ArticleVM Map(Article source)
         {
             var target = new ArticleVM
             {
@@ -29,7 +29,7 @@ namespace BusinessLayer.Mappers
             return target;
         }
 
-        public ArticleVM Map(Article source, params object[] options)
+        public static ArticleVM Map(Article source, params object[] options)
         {
             throw new NotImplementedException();
         }

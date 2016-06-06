@@ -8,7 +8,7 @@ namespace BusinessLayer.ViewModels
         public string LastName { get; set; }
         public string Suffix { get; set; }
         public string FullName => $"{FirstName} {LastName}, {Suffix}";
-        public IList<ArticleVM> Articles { get; set; }
+        public IEnumerable<ArticleVM> Articles { get; set; }
 
         public AuthorVM()
         {

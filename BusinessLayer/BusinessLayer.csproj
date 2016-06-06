@@ -55,8 +55,11 @@
   <ItemGroup>
     <Compile Include="Extensions.cs" />
     <Compile Include="Mappers\ArticleToArticleVMMapper.cs" />
+    <Compile Include="Mappers\ArticleVMToArticleMapper.cs" />
     <Compile Include="Mappers\AuthorToAuthorVMMapper.cs" />
+    <Compile Include="Mappers\AuthorVMToAuthorMapper.cs" />
     <Compile Include="Mappers\SubjectToSubjectVMMapper.cs" />
+    <Compile Include="Mappers\SubjectVMToSubjectMapping.cs" />
     <Compile Include="SearchBindingModels\ArticleSearchBindingModel.cs" />
     <Compile Include="SearchBindingModels\AuthorSearchBindingModel.cs" />
     <Compile Include="SearchBindingModels\ISearchBindingModel.cs" />
@@ -65,6 +68,7 @@
     <Compile Include="Services\AuthorService.cs" />
     <Compile Include="Services\IEIndexService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\NewIEIndexService.cs" />
     <Compile Include="Services\SubjectService.cs" />
     <Compile Include="ViewModels\ArticleVM.cs" />
     <Compile Include="ViewModels\AuthorVM.cs" />
