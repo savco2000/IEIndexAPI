@@ -21,7 +21,7 @@ namespace BusinessLayer.Services
         }
 
         public List<TEntityVM> GetEntities(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber) => Repository.All
-                   .OrderBy(x => x.Id)
+                   .OrderBy(entity => entity.Id)
                    .Skip(pageNumber * pageSize - pageSize)
                    .Take(pageSize)
                    .AsExpandable()

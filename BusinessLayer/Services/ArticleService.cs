@@ -17,7 +17,7 @@ namespace BusinessLayer.Services
 
         public override List<ArticleVM> GetEntitiesWithChildren(ISearchBindingModel<Article> searchParameters, int pageSize, int pageNumber) => 
             Repository.AllIncluding(x => x.Authors, x => x.Subjects)
-                .OrderBy(x => x.Title)
+                .OrderBy(article => article.Title)
                 .Skip(pageNumber * pageSize - pageSize)
                 .Take(pageSize)
                 .AsExpandable()
