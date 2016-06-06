@@ -9,11 +9,11 @@ using LinqKit;
 
 namespace BusinessLayer.Services
 {
-    public abstract class IEIndexService<TEntityVM, TEntity> where TEntity : Entity where TEntityVM : class, new()
+    public abstract class BaseService<TEntityVM, TEntity> where TEntity : Entity where TEntityVM : class, new()
     {
         protected readonly Repository<TEntity> Repository;
 
-        protected IEIndexService(IUnitOfWork uow)
+        protected BaseService(IUnitOfWork uow)
         {
             Repository = new Repository<TEntity>(uow);
             

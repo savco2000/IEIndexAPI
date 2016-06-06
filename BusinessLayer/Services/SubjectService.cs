@@ -9,7 +9,7 @@ using LinqKit;
 
 namespace BusinessLayer.Services
 {
-    public class SubjectService : IEIndexService<SubjectVM, Subject>
+    public class SubjectService : BaseService<SubjectVM, Subject>
     {
         public SubjectService(IUnitOfWork uow) : base(uow)
         {

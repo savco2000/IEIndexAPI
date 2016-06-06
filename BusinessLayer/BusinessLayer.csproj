@@ -65,7 +65,7 @@
     <Compile Include="SearchBindingModels\SubjectSearchBindingModel.cs" />
     <Compile Include="Services\ArticleService.cs" />
     <Compile Include="Services\AuthorService.cs" />
-    <Compile Include="Services\IEIndexService.cs" />
+    <Compile Include="Services\BaseService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SubjectService.cs" />
     <Compile Include="ViewModels\ArticleVM.cs" />

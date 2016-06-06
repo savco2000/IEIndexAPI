@@ -9,7 +9,7 @@ using LinqKit;
 
 namespace BusinessLayer.Services
 {
-    public class AuthorService : IEIndexService<AuthorVM, Author>
+    public class AuthorService : BaseService<AuthorVM, Author>
     {
         public AuthorService(IUnitOfWork uow) : base(uow)
         {
