@@ -53,6 +53,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Mappers\ArticleToArticleVMMapper.cs" />
+    <Compile Include="Mappers\AuthorToAuthorVMMapper.cs" />
+    <Compile Include="Mappers\SubjectToSubjectVMMapper.cs" />
     <Compile Include="SearchBindingModels\ArticleSearchBindingModel.cs" />
     <Compile Include="SearchBindingModels\AuthorSearchBindingModel.cs" />
     <Compile Include="SearchBindingModels\ISearchBindingModel.cs" />
