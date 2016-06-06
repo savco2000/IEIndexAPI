@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -54,12 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions.cs" />
-    <Compile Include="Mappers\ArticleToArticleVMMapper.cs" />
-    <Compile Include="Mappers\ArticleVMToArticleMapper.cs" />
-    <Compile Include="Mappers\AuthorToAuthorVMMapper.cs" />
-    <Compile Include="Mappers\AuthorVMToAuthorMapper.cs" />
-    <Compile Include="Mappers\SubjectToSubjectVMMapper.cs" />
-    <Compile Include="Mappers\SubjectVMToSubjectMapping.cs" />
+    <Compile Include="MappingProfile.cs" />
     <Compile Include="SearchBindingModels\ArticleSearchBindingModel.cs" />
     <Compile Include="SearchBindingModels\AuthorSearchBindingModel.cs" />
     <Compile Include="SearchBindingModels\ISearchBindingModel.cs" />
@@ -68,7 +67,6 @@
     <Compile Include="Services\AuthorService.cs" />
     <Compile Include="Services\IEIndexService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\NewIEIndexService.cs" />
     <Compile Include="Services\SubjectService.cs" />
     <Compile Include="ViewModels\ArticleVM.cs" />
     <Compile Include="ViewModels\AuthorVM.cs" />

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using BusinessLayer.SearchBindingModels;
 using DataLayer;
 using DataLayer.DomainModels;
@@ -8,30 +9,33 @@ using LinqKit;
 
 namespace BusinessLayer.Services
 {
-    public abstract class IEIndexService<TEntity> where TEntity : Entity
+    public abstract class IEIndexService<TEntityVM, TEntity> where TEntity : Entity where TEntityVM : class, new()
     {
         protected readonly Repository<TEntity> Repository;
 
         protected IEIndexService(IUnitOfWork uow)
         {
             Repository = new Repository<TEntity>(uow);
+            
+            var config = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
         }
 
-        public List<TEntity> GetEntities(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber) => Repository.All
-                       .OrderBy(x => x.Id)
-                       .Skip(pageNumber * pageSize - pageSize)
-                       .Take(pageSize)
-                       .AsExpandable()
-                       .Where(searchParameters.SearchFilter())
-                       .ToList();
-       
-        public abstract List<TEntity> GetEntitiesWithChildren(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber);
+        public List<TEntityVM> GetEntities(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber) => Repository.All
+                   .OrderBy(x => x.Id)
+                   .Skip(pageNumber * pageSize - pageSize)
+                   .Take(pageSize)
+                   .AsExpandable()
+                   .Where(searchParameters.SearchFilter())
+                   .Select(entity => Mapper.Map<TEntityVM>(entity))
+                   .ToList();
 
-        public TEntity Find(int id) => Repository.Find(id);
+        public abstract List<TEntityVM> GetEntitiesWithChildren(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber);
 
-        public void InsertGraph(TEntity entityGraph) => Repository.InsertGraph(entityGraph);
+        public TEntityVM Find(int id) => Mapper.Map<TEntityVM>(Repository.Find(id));
 
-        public void InsertOrUpdate(TEntity entity) => Repository.InsertOrUpdate(entity);
+        public void InsertGraph(TEntityVM entityVMGraph) => Repository.InsertGraph(Mapper.Map<TEntity>(entityVMGraph));
+        
+        public void InsertOrUpdate(TEntityVM entityVM) => Repository.InsertOrUpdate(Mapper.Map<TEntity>(entityVM));
 
         public void Delete(int id) => Repository.Delete(id);
     }
