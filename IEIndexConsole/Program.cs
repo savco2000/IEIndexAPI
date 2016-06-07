@@ -30,9 +30,11 @@ namespace IEIndexConsole
             using (var uow = new UnitOfWork<IEIndexContext>(context1))
             {
                 var articleService = new ArticleService(uow, mapper);
-                var articles = articleService.GetEntities(new ArticleSearchBindingModel(), pageSize, pageNumber)
+                var filter = new ArticleSearchBindingModel { Issue = "fall", PublicationYear = "2016"};
+                //var filter = new ArticleSearchBindingModel ();
+                var articles = articleService.GetEntities(filter, pageSize, pageNumber)
                     .ToList();
-                var articlesWithChildren = articleService.GetEntitiesWithChildren(new ArticleSearchBindingModel(), pageSize, pageNumber)
+                var articlesWithChildren = articleService.GetEntitiesWithChildren(filter, pageSize, pageNumber)
                     .ToList();
             }
 

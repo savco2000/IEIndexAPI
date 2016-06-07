@@ -23,9 +23,9 @@ namespace BusinessLayer.SearchBindingModels
             if (!string.IsNullOrWhiteSpace(LastName))
                 predicate = predicate.And(p => p.LastName.ToLower() == LastName.ToLower());
 
-            //var suffix = (Suffixes)Enum.Parse(typeof(Suffixes), Suffix);
-            //if (!string.IsNullOrWhiteSpace(Suffix))
-            //    predicate = predicate.And(p => p.Suffix == suffix);
+            Suffixes suffix;
+            if (Enum.TryParse(Suffix, true, out suffix))
+                predicate = predicate.And(p => p.Suffix == suffix);
 
             return predicate;
         }
