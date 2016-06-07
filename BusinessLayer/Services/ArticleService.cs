@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using BusinessLayer.SearchBindingModels;
 using BusinessLayer.ViewModels;
 using DataLayer;
@@ -10,8 +11,11 @@ namespace BusinessLayer.Services
 {
     public class ArticleService : BaseService<ArticleVM, Article>
     {
-        public ArticleService(IUnitOfWork uow) : base(uow)
+        private readonly IMapper _mapper;
+
+        public ArticleService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
+            _mapper = mapper;
         }
 
         public override List<ArticleVM> GetEntitiesWithChildren(ISearchBindingModel<Article> searchParameters, int pageSize, int pageNumber) => Repository.AllIncluding(x => x.Authors, x => x.Subjects)
@@ -21,7 +25,7 @@ namespace BusinessLayer.Services
                 .AsExpandable()
                 .Where(searchParameters.SearchFilter())
                 .ToList()
-                .Select(article => Mapper.Map<ArticleVM>(article))
+                .Select(article => _mapper.Map<ArticleVM>(article))
                 .ToList();
     }
 }

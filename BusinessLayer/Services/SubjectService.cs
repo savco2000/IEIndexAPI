@@ -11,8 +11,11 @@ namespace BusinessLayer.Services
 {
     public class SubjectService : BaseService<SubjectVM, Subject>
     {
-        public SubjectService(IUnitOfWork uow) : base(uow)
+        private readonly IMapper _mapper;
+
+        public SubjectService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
+            _mapper = mapper;
         }
 
         public override List<SubjectVM> GetEntitiesWithChildren(ISearchBindingModel<Subject> searchParameters, int pageSize, int pageNumber) => 
@@ -22,7 +25,7 @@ namespace BusinessLayer.Services
                 .Take(pageSize)
                 .AsExpandable()
                 .Where(searchParameters.SearchFilter())
-                .Select(article => AutoMapper.Mapper.Map<SubjectVM>(article))
+                .Select(article => _mapper.Map<SubjectVM>(article))
                 .ToList();
     }
 }

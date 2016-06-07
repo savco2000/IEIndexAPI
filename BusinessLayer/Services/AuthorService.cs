@@ -11,8 +11,11 @@ namespace BusinessLayer.Services
 {
     public class AuthorService : BaseService<AuthorVM, Author>
     {
-        public AuthorService(IUnitOfWork uow) : base(uow)
+        private readonly IMapper _mapper;
+
+        public AuthorService(IUnitOfWork uow, IMapper mapper) : base(uow, mapper)
         {
+            _mapper = mapper;
         }
 
         public override List<AuthorVM> GetEntitiesWithChildren(ISearchBindingModel<Author> searchParameters, int pageSize, int pageNumber) => 
@@ -22,7 +25,7 @@ namespace BusinessLayer.Services
                 .Take(pageSize)
                 .AsExpandable()
                 .Where(searchParameters.SearchFilter())
-                .Select(author => AutoMapper.Mapper.Map<AuthorVM>(author))
+                .Select(author => _mapper.Map<AuthorVM>(author))
                 .ToList();
 
     }

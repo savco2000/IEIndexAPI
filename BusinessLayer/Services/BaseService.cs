@@ -13,14 +13,12 @@ namespace BusinessLayer.Services
     {
         protected readonly Repository<TEntity> Repository;
         protected readonly IMapper Mapper;
+        private readonly IMapper _mapper;
 
-        protected BaseService(IUnitOfWork uow)
+        protected BaseService(IUnitOfWork uow, IMapper mapper)
         {
+            _mapper = mapper;
             Repository = new Repository<TEntity>(uow);
-            
-            var mapperConfiguration = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
-
-            Mapper = mapperConfiguration.CreateMapper();
         }
 
         public List<TEntityVM> GetEntities(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber) => Repository.All
@@ -30,21 +28,8 @@ namespace BusinessLayer.Services
                    .AsExpandable()
                    .Where(searchParameters.SearchFilter())
                    .ToList()
-                   .Select(entity => Mapper.Map<TEntityVM>(entity))
+                   .Select(entity => _mapper.Map<TEntityVM>(entity))
                    .ToList();
-
-        //public List<TEntityVM> GetEntities(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber)
-        //{
-        //    var xyz = Repository.All
-        //      .OrderBy(entity => entity.Id)
-        //      .Skip(pageNumber * pageSize - pageSize)
-        //      .Take(pageSize)
-        //      .AsExpandable()
-        //      .Where(searchParameters.SearchFilter())
-        //      .ToList();
-
-        //    return xyz.Select(_mapper.Map<TEntityVM>).ToList();
-        //} 
 
         public abstract List<TEntityVM> GetEntitiesWithChildren(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber);
 
