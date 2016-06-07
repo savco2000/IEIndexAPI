@@ -18,15 +18,14 @@ namespace BusinessLayer.Services
             _mapper = mapper;
         }
 
-        public override List<AuthorVM> GetEntitiesWithChildren(ISearchBindingModel<Author> searchParameters, int pageSize, int pageNumber) => 
+        public override IEnumerable<AuthorVM> GetEntitiesWithChildren(ISearchBindingModel<Author> searchParameters, int pageSize, int pageNumber) =>
             Repository.AllIncluding(x => x.Articles)
                 .OrderBy(author => author.LastName)
-                .Skip(pageNumber * pageSize - pageSize)
+                .Skip(pageNumber*pageSize - pageSize)
                 .Take(pageSize)
                 .AsExpandable()
                 .Where(searchParameters.SearchFilter())
-                .Select(author => _mapper.Map<AuthorVM>(author))
-                .ToList();
-
+                .ToList()
+                .Select(author => _mapper.Map<AuthorVM>(author));
     }
 }
