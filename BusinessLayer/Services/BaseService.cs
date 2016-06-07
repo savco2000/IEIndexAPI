@@ -12,12 +12,15 @@ namespace BusinessLayer.Services
     public abstract class BaseService<TEntityVM, TEntity> where TEntity : Entity where TEntityVM : class, new()
     {
         protected readonly Repository<TEntity> Repository;
+        protected readonly IMapper Mapper;
 
         protected BaseService(IUnitOfWork uow)
         {
             Repository = new Repository<TEntity>(uow);
             
-            var config = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
+            var mapperConfiguration = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
+
+            Mapper = mapperConfiguration.CreateMapper();
         }
 
         public List<TEntityVM> GetEntities(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber) => Repository.All
@@ -26,16 +29,30 @@ namespace BusinessLayer.Services
                    .Take(pageSize)
                    .AsExpandable()
                    .Where(searchParameters.SearchFilter())
+                   .ToList()
                    .Select(entity => Mapper.Map<TEntityVM>(entity))
                    .ToList();
 
+        //public List<TEntityVM> GetEntities(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber)
+        //{
+        //    var xyz = Repository.All
+        //      .OrderBy(entity => entity.Id)
+        //      .Skip(pageNumber * pageSize - pageSize)
+        //      .Take(pageSize)
+        //      .AsExpandable()
+        //      .Where(searchParameters.SearchFilter())
+        //      .ToList();
+
+        //    return xyz.Select(_mapper.Map<TEntityVM>).ToList();
+        //} 
+
         public abstract List<TEntityVM> GetEntitiesWithChildren(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber);
 
-        public TEntityVM Find(int id) => Mapper.Map<TEntityVM>(Repository.Find(id));
+        public TEntityVM Find(int id) => AutoMapper.Mapper.Map<TEntityVM>(Repository.Find(id));
 
-        public void InsertGraph(TEntityVM entityVMGraph) => Repository.InsertGraph(Mapper.Map<TEntity>(entityVMGraph));
+        public void InsertGraph(TEntityVM entityVMGraph) => Repository.InsertGraph(AutoMapper.Mapper.Map<TEntity>(entityVMGraph));
         
-        public void InsertOrUpdate(TEntityVM entityVM) => Repository.InsertOrUpdate(Mapper.Map<TEntity>(entityVM));
+        public void InsertOrUpdate(TEntityVM entityVM) => Repository.InsertOrUpdate(AutoMapper.Mapper.Map<TEntity>(entityVM));
 
         public void Delete(int id) => Repository.Delete(id);
     }

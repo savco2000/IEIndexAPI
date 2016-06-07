@@ -22,7 +22,7 @@ namespace BusinessLayer.Services
                 .Take(pageSize)
                 .AsExpandable()
                 .Where(searchParameters.SearchFilter())
-                .Select(article => Mapper.Map<SubjectVM>(article))
+                .Select(article => AutoMapper.Mapper.Map<SubjectVM>(article))
                 .ToList();
     }
 }
