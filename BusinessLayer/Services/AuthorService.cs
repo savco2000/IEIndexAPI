@@ -25,7 +25,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                var xyz = Repository.AllIncluding(x => x.Articles)
+                var authors = Repository.AllIncluding(x => x.Articles)
                     .OrderBy(author => author.LastName)
                     .Skip(pageNumber*pageSize - pageSize)
                     .Take(pageSize)
@@ -33,7 +33,7 @@ namespace BusinessLayer.Services
                     .Where(searchParameters.SearchFilter())
                     .ToList();
 
-                return xyz.Select(author => _mapper.Map<AuthorVM>(author));
+                return authors.Select(author => _mapper.Map<AuthorVM>(author));
             }
             catch (SqlException ex)
             {
