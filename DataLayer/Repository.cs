@@ -30,10 +30,12 @@ namespace DataLayer.Repositories
             _uow = uow;
             _context = uow.Context as IEIndexContext;
         }
+        public IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            var entities = _context.Set<TEntity>().AsQueryable();
+            return includeProperties.Aggregate(entities, (current, includeProperty) => current.Include(includeProperty));
+        }
 
-        public IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties) =>
-            includeProperties.Aggregate(_context.Set<TEntity>().AsQueryable(), (current, includeProperty) => current.Include(includeProperty));
-        
         public TEntity Find(int id) => _context.Set<TEntity>().Find(id);
 
         public void InsertGraph(TEntity entityGraph) => _context.Set<TEntity>().Add(entityGraph);
