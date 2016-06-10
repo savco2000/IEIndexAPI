@@ -34,7 +34,7 @@ namespace IEIndexConsole
                 //var filter = new ArticleSearchBindingModel ();
                 var articles = articleService.GetEntities(filter, pageSize, pageNumber)
                     .ToList();
-                var articlesWithChildren = articleService.GetEntitiesWithChildren(filter, pageSize, pageNumber)
+                var articlesWithChildren = articleService.GetFullEntities(filter, pageSize, pageNumber)
                     .ToList();
             }
 
@@ -45,7 +45,7 @@ namespace IEIndexConsole
                 var authorService = new AuthorService(uow, mapper);
                 var authors = authorService.GetEntities(new AuthorSearchBindingModel(), pageSize, 1)
                     .ToList();
-                var authorsWithChildren = authorService.GetEntitiesWithChildren(new AuthorSearchBindingModel(), pageSize, pageNumber)
+                var authorsWithChildren = authorService.GetFullEntities(new AuthorSearchBindingModel(), pageSize, pageNumber)
                     .ToList();
             }
 
@@ -56,7 +56,7 @@ namespace IEIndexConsole
                 var subjectService = new SubjectService(uow, mapper);
                 var subjects = subjectService.GetEntities(new SubjectSearchBindingModel(), pageSize, pageNumber)
                     .ToList();
-                var subjectsWithChildren = subjectService.GetEntitiesWithChildren(new SubjectSearchBindingModel(), pageSize, pageNumber)
+                var subjectsWithChildren = subjectService.GetFullEntities(new SubjectSearchBindingModel(), pageSize, pageNumber)
                     .ToList();
             }
         }
