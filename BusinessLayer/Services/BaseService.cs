@@ -24,18 +24,24 @@ namespace BusinessLayer.Services
             Log = log;
             Repository = new Repository<TEntity>(uow);
         }
-       
-        public IEnumerable<TEntityVM> GetEntities(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber)
+
+        public IEnumerable<TEntityVM> GetEntities(ISearchBindingModel<TEntity> searchParameters = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
         {
             try
             {
-                var entities = Repository.All
-                    .OrderBy(entity => entity.Id)
-                    .Skip(pageNumber*pageSize - pageSize)
-                    .Take(pageSize)
-                    .AsExpandable()
-                    .Where(searchParameters.SearchFilter())
-                    .ToList();
+                var query = Repository.All;
+
+                query = orderDesc ? query.OrderByDescending(entity => entity.Id) : query.OrderBy(entity => entity.Id);
+
+                if (pageSize != 0 && pageNumber != 0)
+                    query = query.Skip(pageNumber*pageSize - pageSize).Take(pageSize);
+
+                query = query.AsExpandable();
+
+                if (searchParameters != null)
+                    query = query.Where(searchParameters.SearchFilter());
+
+                var entities = query.ToList();
 
                 return entities.Select(entity => _mapper.Map<TEntityVM>(entity));
             }
@@ -45,6 +51,27 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
+
+        //public IEnumerable<TEntityVM> GetEntities(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber)
+        //{
+        //    try
+        //    {
+        //        var entities = Repository.All
+        //            .OrderBy(entity => entity.Id)
+        //            .Skip(pageNumber*pageSize - pageSize)
+        //            .Take(pageSize)
+        //            .AsExpandable()
+        //            .Where(searchParameters.SearchFilter())
+        //            .ToList();
+
+        //        return entities.Select(entity => _mapper.Map<TEntityVM>(entity));
+        //    }
+        //    catch (SqlException ex)
+        //    {
+        //        Log.Error(ex.Message);
+        //        throw;
+        //    }
+        //}
             
 
         public abstract IEnumerable<TEntityVM> GetFullEntities(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber);

@@ -16,8 +16,8 @@ namespace IEIndexConsole
         {
             var log = LogManager.GetLogger(typeof(Program));
 
-            const int pageSize = 10;
-            const int pageNumber = 1;
+            const int pageSize = 5;
+            const int pageNumber = 2;
 
             var kernel = new StandardKernel();
 
@@ -33,10 +33,12 @@ namespace IEIndexConsole
             using (var uow = new UnitOfWork<IEIndexContext>(context1))
             {
                 var articleService = new ArticleService(uow, mapper, log);
-                var filter = new ArticleSearchBindingModel { Issue = "fall", PublicationYear = "2016"};
+                var filter = new ArticleSearchBindingModel { Issue = "fall"};
                 //var filter = new ArticleSearchBindingModel ();
-                var articles = articleService.GetEntities(filter, pageSize, pageNumber)
+                var articles = articleService.GetEntities(filter, pageSize: pageSize, pageNumber: pageNumber)
                     .ToList();
+                //var articles = articleService.GetEntities(pageSize: pageSize, pageNumber: pageNumber)
+                //    .ToList();
                 var articlesWithChildren = articleService.GetFullEntities(filter, pageSize, pageNumber)
                     .ToList();
             }
@@ -46,7 +48,7 @@ namespace IEIndexConsole
             using (var uow = new UnitOfWork<IEIndexContext>(context2))
             {
                 var authorService = new AuthorService(uow, mapper, log);
-                var authors = authorService.GetEntities(new AuthorSearchBindingModel(), pageSize, 1)
+                var authors = authorService.GetEntities(new AuthorSearchBindingModel(), pageSize: pageSize, pageNumber: pageNumber)
                     .ToList();
                 var authorsWithChildren = authorService.GetFullEntities(new AuthorSearchBindingModel(), pageSize, pageNumber)
                     .ToList();
@@ -57,7 +59,7 @@ namespace IEIndexConsole
             using (var uow = new UnitOfWork<IEIndexContext>(context3))
             {
                 var subjectService = new SubjectService(uow, mapper, log);
-                var subjects = subjectService.GetEntities(new SubjectSearchBindingModel(), pageSize, pageNumber)
+                var subjects = subjectService.GetEntities(new SubjectSearchBindingModel(), pageSize: pageSize, pageNumber: pageNumber)
                     .ToList();
                 var subjectsWithChildren = subjectService.GetFullEntities(new SubjectSearchBindingModel(), pageSize, pageNumber)
                     .ToList();
