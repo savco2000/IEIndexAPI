@@ -5,7 +5,7 @@ using LinqKit;
 
 namespace BusinessLayer.SearchBindingModels
 {
-    public class SubjectSearchBindingModel : ISearchBindingModel<Subject>
+    public class SubjectSearchFilter : ISearchFilter<Subject>
     {
         public string PageSize { get; set; }
         public string PageNumber { get; set; }

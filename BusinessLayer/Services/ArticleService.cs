@@ -21,7 +21,7 @@ namespace BusinessLayer.Services
             _mapper = mapper;
         }
 
-        public override IEnumerable<ArticleVM> GetFullEntities(ISearchBindingModel<Article> searchParameters, int pageSize, int pageNumber)
+        public override IEnumerable<ArticleVM> GetFullEntities(ISearchFilter<Article> searchParameters, int pageSize, int pageNumber)
         {
             try
             {

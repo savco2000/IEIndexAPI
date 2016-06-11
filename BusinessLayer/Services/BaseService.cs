@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Linq.Expressions;
 using AutoMapper;
 using BusinessLayer.SearchBindingModels;
 using DataLayer;
@@ -25,7 +26,7 @@ namespace BusinessLayer.Services
             Repository = new Repository<TEntity>(uow);
         }
 
-        public IEnumerable<TEntityVM> GetEntities(ISearchBindingModel<TEntity> searchParameters = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
+        public IEnumerable<TEntityVM> GetEntities(Expression<Func<TEntity, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
         {
             try
             {
@@ -38,8 +39,8 @@ namespace BusinessLayer.Services
 
                 query = query.AsExpandable();
 
-                if (searchParameters != null)
-                    query = query.Where(searchParameters.SearchFilter());
+                if (searchFilter != null)
+                    query = query.Where(searchFilter);
 
                 var entities = query.ToList();
 
@@ -52,7 +53,7 @@ namespace BusinessLayer.Services
             }
         }
 
-        //public IEnumerable<TEntityVM> GetEntities(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber)
+        //public IEnumerable<TEntityVM> GetEntities(ISearchFilter<TEntity> searchParameters, int pageSize, int pageNumber)
         //{
         //    try
         //    {
@@ -74,7 +75,7 @@ namespace BusinessLayer.Services
         //}
             
 
-        public abstract IEnumerable<TEntityVM> GetFullEntities(ISearchBindingModel<TEntity> searchParameters, int pageSize, int pageNumber);
+        public abstract IEnumerable<TEntityVM> GetFullEntities(ISearchFilter<TEntity> searchParameters, int pageSize, int pageNumber);
 
         public TEntityVM Find(int id)
         {

@@ -4,7 +4,7 @@ using DataLayer.DomainModels;
 
 namespace BusinessLayer.SearchBindingModels
 {
-    public interface ISearchBindingModel<TEntity> where TEntity : Entity
+    public interface ISearchFilter<TEntity> where TEntity : Entity
     {
         string PageSize { get; set; }
         string PageNumber { get; set; }
