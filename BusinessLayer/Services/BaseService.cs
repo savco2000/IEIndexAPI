@@ -25,7 +25,7 @@ namespace BusinessLayer.Services
         }
 
         public abstract IEnumerable<TEntityVM> GetEntities(Expression<Func<TEntity, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0);
-        public abstract IEnumerable<TEntityVM> GetFullEntities(ISearchFilter<TEntity> searchParameters, int pageSize, int pageNumber);
+        public abstract IEnumerable<TEntityVM> GetFullEntities(Expression<Func<TEntity, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0);
 
         public TEntityVM Find(int id)
         {

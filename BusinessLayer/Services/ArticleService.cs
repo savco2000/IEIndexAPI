@@ -49,19 +49,25 @@ namespace BusinessLayer.Services
             }
         }
 
-        public override IEnumerable<ArticleVM> GetFullEntities(ISearchFilter<Article> searchParameters, int pageSize, int pageNumber)
+        public override IEnumerable<ArticleVM> GetFullEntities(Expression<Func<Article, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
         {
             try
             {
-                var articles = Repository.AllIncluding(x => x.Authors, x => x.Subjects)
-                    .OrderBy(article => article.Title)
-                    .Skip(pageNumber*pageSize - pageSize)
-                    .Take(pageSize)
-                    .AsExpandable()
-                    .Where(searchParameters.Filter())
-                    .ToList();
+                var query = Repository.AllIncluding(x => x.Authors, x => x.Subjects);
 
-                return articles.Select(article => _mapper.Map<ArticleVM>(article));
+                query = orderDesc ? query.OrderByDescending(entity => entity.Title) : query.OrderBy(entity => entity.Title);
+
+                if (pageSize != 0 && pageNumber != 0)
+                    query = query.Skip(pageNumber * pageSize - pageSize).Take(pageSize);
+
+                query = query.AsExpandable();
+
+                if (searchFilter != null)
+                    query = query.Where(searchFilter);
+
+                var entities = query.ToList();
+
+                return entities.Select(entity => _mapper.Map<ArticleVM>(entity));
             }
             catch (SqlException ex)
             {
