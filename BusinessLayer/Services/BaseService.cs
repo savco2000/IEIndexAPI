@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper;
 using BusinessLayer.SearchFilters;
@@ -9,7 +8,6 @@ using DataLayer;
 using DataLayer.DomainModels;
 using DataLayer.Repositories;
 using log4net;
-using LinqKit;
 
 namespace BusinessLayer.Services
 {
@@ -26,55 +24,7 @@ namespace BusinessLayer.Services
             Repository = new Repository<TEntity>(uow);
         }
 
-        public IEnumerable<TEntityVM> GetEntities(Expression<Func<TEntity, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
-        {
-            try
-            {
-                var query = Repository.All;
-
-                query = orderDesc ? query.OrderByDescending(entity => entity.Id) : query.OrderBy(entity => entity.Id);
-
-                if (pageSize != 0 && pageNumber != 0)
-                    query = query.Skip(pageNumber*pageSize - pageSize).Take(pageSize);
-
-                query = query.AsExpandable();
-
-                if (searchFilter != null)
-                    query = query.Where(searchFilter);
-
-                var entities = query.ToList();
-
-                return entities.Select(entity => _mapper.Map<TEntityVM>(entity));
-            }
-            catch (SqlException ex)
-            {
-                Log.Error(ex.Message);
-                throw;
-            }
-        }
-
-        //public IEnumerable<TEntityVM> GetEntities(ISearchFilter<TEntity> searchParameters, int pageSize, int pageNumber)
-        //{
-        //    try
-        //    {
-        //        var entities = Repository.All
-        //            .OrderBy(entity => entity.Id)
-        //            .Skip(pageNumber*pageSize - pageSize)
-        //            .Take(pageSize)
-        //            .AsExpandable()
-        //            .Where(searchParameters.Filter())
-        //            .ToList();
-
-        //        return entities.Select(entity => _mapper.Map<TEntityVM>(entity));
-        //    }
-        //    catch (SqlException ex)
-        //    {
-        //        Log.Error(ex.Message);
-        //        throw;
-        //    }
-        //}
-            
-
+        public abstract IEnumerable<TEntityVM> GetEntities(Expression<Func<TEntity, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0);
         public abstract IEnumerable<TEntityVM> GetFullEntities(ISearchFilter<TEntity> searchParameters, int pageSize, int pageNumber);
 
         public TEntityVM Find(int id)
