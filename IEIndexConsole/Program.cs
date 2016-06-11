@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using AutoMapper;
 using BusinessLayer;
-using BusinessLayer.SearchBindingModels;
+using BusinessLayer.SearchFilters;
 using BusinessLayer.Services;
 using DataLayer;
 using DataLayer.Contexts;
@@ -35,7 +35,7 @@ namespace IEIndexConsole
                 var articleService = new ArticleService(uow, mapper, log);
                 var filter = new ArticleSearchFilter { Issue = "fall"};
                 //var filter = new ArticleSearchFilter ();
-                var articles = articleService.GetEntities(filter.SearchFilter(), pageSize: pageSize, pageNumber: pageNumber)
+                var articles = articleService.GetEntities(filter.Filter(), pageSize: pageSize, pageNumber: pageNumber)
                     .ToList();
                 //var articles = articleService.GetEntities(pageSize: pageSize, pageNumber: pageNumber)
                 //    .ToList();

@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using DataLayer.DomainModels;
 using LinqKit;
 
-namespace BusinessLayer.SearchBindingModels
+namespace BusinessLayer.SearchFilters
 {
     public class ArticleSearchFilter : ISearchFilter<Article>
     {
@@ -14,7 +14,7 @@ namespace BusinessLayer.SearchBindingModels
         public string PublicationYear { get; set; }
         public bool? IsSupplement { get; set; }
 
-        public Expression<Func<Article, bool>> SearchFilter()
+        public Expression<Func<Article, bool>> Filter()
         {
             var predicate = PredicateBuilder.True<Article>();
 

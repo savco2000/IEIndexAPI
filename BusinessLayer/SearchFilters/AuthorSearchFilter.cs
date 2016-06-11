@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using DataLayer.DomainModels;
 using LinqKit;
 
-namespace BusinessLayer.SearchBindingModels
+namespace BusinessLayer.SearchFilters
 {
     public class AuthorSearchFilter : ISearchFilter<Author>
     {
@@ -13,7 +13,7 @@ namespace BusinessLayer.SearchBindingModels
         public string LastName { get; set; }
         public string Suffix { get; set; }
         
-        public Expression<Func<Author, bool>> SearchFilter()
+        public Expression<Func<Author, bool>> Filter()
         {
             var predicate = PredicateBuilder.True<Author>();
 

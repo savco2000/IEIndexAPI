@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper;
-using BusinessLayer.SearchBindingModels;
+using BusinessLayer.SearchFilters;
 using DataLayer;
 using DataLayer.DomainModels;
 using DataLayer.Repositories;
@@ -62,7 +62,7 @@ namespace BusinessLayer.Services
         //            .Skip(pageNumber*pageSize - pageSize)
         //            .Take(pageSize)
         //            .AsExpandable()
-        //            .Where(searchParameters.SearchFilter())
+        //            .Where(searchParameters.Filter())
         //            .ToList();
 
         //        return entities.Select(entity => _mapper.Map<TEntityVM>(entity));

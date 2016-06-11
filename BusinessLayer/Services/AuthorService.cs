@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using AutoMapper;
-using BusinessLayer.SearchBindingModels;
+using BusinessLayer.SearchFilters;
 using BusinessLayer.ViewModels;
 using DataLayer;
 using DataLayer.DomainModels;
@@ -30,7 +30,7 @@ namespace BusinessLayer.Services
                     .Skip(pageNumber*pageSize - pageSize)
                     .Take(pageSize)
                     .AsExpandable()
-                    .Where(searchParameters.SearchFilter())
+                    .Where(searchParameters.Filter())
                     .ToList();
 
                 return authors.Select(author => _mapper.Map<AuthorVM>(author));
