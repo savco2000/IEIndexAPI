@@ -1,6 +1,5 @@
 ﻿using DataLayer.Contexts;
 using DataLayer.DomainModels;
-using DataLayer.Repositories;
 using Moq;
 using Xunit;
 using System.Linq;

@@ -4,7 +4,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper;
-using BusinessLayer.SearchFilters;
 using BusinessLayer.ViewModels;
 using DataLayer;
 using DataLayer.DomainModels;

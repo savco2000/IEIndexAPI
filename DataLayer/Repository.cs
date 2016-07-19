@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using DataLayer.Contexts;
 using DataLayer.DomainModels;
 
-namespace DataLayer.Repositories
+namespace DataLayer
 {
     public interface IEntityRepository<TEntity> where TEntity : Entity
     {

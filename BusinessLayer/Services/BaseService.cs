@@ -6,7 +6,6 @@ using AutoMapper;
 using BusinessLayer.SearchFilters;
 using DataLayer;
 using DataLayer.DomainModels;
-using DataLayer.Repositories;
 using log4net;
 
 namespace BusinessLayer.Services
