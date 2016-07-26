@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq.Expressions;
 using AutoMapper;
-using BusinessLayer.SearchFilters;
 using DataLayer;
 using DataLayer.DomainModels;
 using log4net;
@@ -13,14 +12,15 @@ namespace BusinessLayer.Services
     public abstract class BaseService<TEntityVM, TEntity> where TEntity : Entity where TEntityVM : class, new()
     {
         protected readonly Repository<TEntity> Repository;
-        private readonly IMapper _mapper;
         protected readonly ILog Log;
+
+        private readonly IMapper _mapper;
 
         protected BaseService(IUnitOfWork uow, IMapper mapper, ILog log)
         {
-            _mapper = mapper;
-            Log = log;
             Repository = new Repository<TEntity>(uow);
+            Log = log;
+            _mapper = mapper;
         }
 
         public abstract IEnumerable<TEntityVM> GetEntities(Expression<Func<TEntity, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0);
