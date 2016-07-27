@@ -16,10 +16,7 @@ namespace BusinessLayer
             CreateMap<ArticleVM, Article>()
                 .ForMember(dest => dest.Issue, opt => opt.MapFrom(src => (Issues) Enum.Parse(typeof(Issues), src.Issue)))
                 .ForMember(dest => dest.PublicationYear, opt => opt.MapFrom(src => (PublicationYears) Enum.Parse(typeof(PublicationYears), src.PublicationYear)));
-
-            //CreateMap<Author, AuthorVM>()
-            //    .ForMember(dest => dest.Suffix, opt => opt.MapFrom(src => src.Suffix.GetEnumDescription()));
-
+            
             CreateMap<Author, AuthorVM>()
                 .ForMember(dest => dest.Suffix, opt => opt.MapFrom(src => src.Suffix == Suffixes.Invalid ? string.Empty : src.Suffix.GetEnumDescription()));
 
