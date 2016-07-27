@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DataLayer.DomainModels;
 
 namespace BusinessLayer.ViewModels
 {
@@ -7,7 +8,7 @@ namespace BusinessLayer.ViewModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Suffix { get; set; }
-        public string FullName => $"{FirstName} {LastName}, {Suffix}";
+        public string FullName => string.IsNullOrWhiteSpace(Suffix) ? $"{FirstName} {LastName}" : $"{FirstName} {LastName}, {Suffix}";
         public IEnumerable<ArticleVM> Articles { get; set; }
 
         public AuthorVM()

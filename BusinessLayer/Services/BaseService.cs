@@ -16,6 +16,13 @@ namespace BusinessLayer.Services
 
         private readonly IMapper _mapper;
 
+        protected BaseService(Repository<TEntity> repository, IMapper mapper, ILog log)
+        {
+            Repository = repository;
+            Log = log;
+            _mapper = mapper;
+        }
+
         protected BaseService(IUnitOfWork uow, IMapper mapper, ILog log)
         {
             Repository = new Repository<TEntity>(uow);
