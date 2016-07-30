@@ -23,14 +23,14 @@ namespace DataLayer
         private readonly IUnitOfWork _uow;
         private readonly IEIndexContext _context;
 
-        public IQueryable<TEntity> All => _context.Set<TEntity>();       
+        public virtual IQueryable<TEntity> All => _context.Set<TEntity>();       
 
         public Repository(IUnitOfWork uow)
         {
             _uow = uow;
             _context = uow.Context as IEIndexContext;
         }
-        public IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
+        public virtual IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
         {
             var entities = _context.Set<TEntity>().AsQueryable();
             return includeProperties.Aggregate(entities, (current, includeProperty) => current.Include(includeProperty));
