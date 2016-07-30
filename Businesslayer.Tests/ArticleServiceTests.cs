@@ -36,27 +36,55 @@ namespace BusinessLayer.Tests
             {
                 var mockRepo = new Mock<Repository<Article>>(uow);
 
-                mockRepo.Setup(x => x.AllIncluding(It.IsAny<Expression<Func<Article, object>>[]>()))
-                    .Returns((Expression<Func<Article, object>>[] includeProperties) => _articlesWithChildren);
-
                 mockRepo.SetupGet(x => x.All).Returns(() => _articles);
 
                 var sut = new ArticleService(mockRepo.Object, new Mock<IMapper>().Object, new Mock<ILog>().Object);
 
                 var expectedCount = _articles.Count();
                 var allArticles = sut.GetEntities();
-
-                var allArticlesWithChildren = sut.GetFullEntities();
                 
                 mockRepo.VerifyAll();
 
                 Assert.Equal(expectedCount, allArticles.Count());
-                Assert.Equal(expectedCount, allArticlesWithChildren.Count());
             }
         }
 
         [Fact]
-        public void if_database_is_unavailable_then_sql_exception_should_be_thrown_and_logged_()
+        public void all_articles_should_be_retrieved_along_with_their_children()
+        {
+            using (var uow = new UnitOfWork<IEIndexContext>(_mockContext.Object))
+            {
+                var mockRepo = new Mock<Repository<Article>>(uow);
+
+                mockRepo.Setup(x => x.AllIncluding(It.IsAny<Expression<Func<Article, object>>[]>()))
+                    .Returns((Expression<Func<Article, object>>[] includeProperties) => _articlesWithChildren);
+
+                var sut = new ArticleService(mockRepo.Object, new Mock<IMapper>().Object, new Mock<ILog>().Object);
+
+                var expectedCount = _articles.Count();
+
+                var allArticlesWithChildren = sut.GetFullEntities();
+
+                mockRepo.VerifyAll();
+                
+                Assert.Equal(expectedCount, allArticlesWithChildren.Count());
+            }
+        }
+    }
+
+    [Trait("Category", "ArticleService Unit Tests")]
+    [Collection("ArticleService Collection")]
+    public class when_querying_for_articles_and_database_is_unavailable
+    {
+        private readonly Mock<IEIndexContext> _mockContext;
+
+        public when_querying_for_articles_and_database_is_unavailable(ArticleServiceFixture fixture)
+        {
+            _mockContext = new Mock<IEIndexContext>();
+        }
+
+        [Fact]
+        public void then_sql_exception_should_be_thrown_and_logged()
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_mockContext.Object))
             {
@@ -65,13 +93,15 @@ namespace BusinessLayer.Tests
                 var exception = FormatterServices.GetUninitializedObject(typeof(SqlException)) as SqlException;
 
                 mockRepo.SetupGet(x => x.All).Throws(exception);
+                mockRepo.Setup(x => x.AllIncluding(It.IsAny<Expression<Func<Article, object>>[]>())).Throws(exception);
 
                 var mockLog = new Mock<ILog>();
                 var sut = new ArticleService(mockRepo.Object, new Mock<IMapper>().Object, mockLog.Object);
 
                 Assert.Throws<SqlException>(() => sut.GetEntities());
+                Assert.Throws<SqlException>(() => sut.GetFullEntities());
 
-                mockLog.Verify(x => x.Error(It.IsAny<string>()), Times.Once);
+                mockLog.Verify(x => x.Error(It.IsAny<string>()), Times.Exactly(2));
             }
         }
     }
