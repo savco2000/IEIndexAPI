@@ -37,9 +37,11 @@ namespace BusinessLayer.Services
                 if (searchFilter != null)
                     query = query.Where(searchFilter);
 
-                var entities = query.ToList();
+                var authors = query.ToList();
 
-                return entities.Select(entity => _mapper.Map<AuthorVM>(entity));
+                var authorVms = authors.Select(author => _mapper.Map<AuthorVM>(author));
+
+                return authorVms;
             }
             catch (SqlException ex)
             {
@@ -63,10 +65,12 @@ namespace BusinessLayer.Services
 
                 if (searchFilter != null)
                     query = query.Where(searchFilter);
+                
+                var authors = query.ToList();
 
-                var entities = query.ToList();
+                var authorVms = authors.Select(author => _mapper.Map<AuthorVM>(author));
 
-                return entities.Select(entity => _mapper.Map<AuthorVM>(entity));
+                return authorVms;
             }
             catch (SqlException ex)
             {
