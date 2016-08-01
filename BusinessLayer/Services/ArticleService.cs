@@ -42,9 +42,11 @@ namespace BusinessLayer.Services
                 if (searchFilter != null)
                     query = query.Where(searchFilter);
 
-                var entities = query.ToList();
+                var articles = query.ToList();
 
-                return entities.Select(entity => _mapper.Map<ArticleVM>(entity));
+                var articleVMs = articles.Select(article => _mapper.Map<ArticleVM>(article));
+
+                return articleVMs;
             }
             catch (SqlException ex)
             {
@@ -69,9 +71,11 @@ namespace BusinessLayer.Services
                 if (searchFilter != null)
                     query = query.Where(searchFilter);
 
-                var entities = query.ToList();
+                var articles = query.ToList();
 
-                return entities.Select(entity => _mapper.Map<ArticleVM>(entity));
+                var articleVMs = articles.Select(article => _mapper.Map<ArticleVM>(article));
+
+                return articleVMs;
             }
             catch (SqlException ex)
             {
