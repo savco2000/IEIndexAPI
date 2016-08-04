@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using AutoMapper;
 using BusinessLayer.Services;
 using BusinessLayer.Tests.CollectionFixtures;
+using Castle.Core.Internal;
 using DataLayer;
 using DataLayer.Contexts;
 using DataLayer.DomainModels;
@@ -30,7 +31,7 @@ namespace BusinessLayer.Tests
         }
 
         [Fact]
-        public void all_articles_should_be_retrieved()
+        public void all_articles_should_be_retrieved_minus_their_children()
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_mockContext.Object))
             {
@@ -41,11 +42,15 @@ namespace BusinessLayer.Tests
                 var sut = new ArticleService(mockRepo.Object, new Mock<IMapper>().Object, new Mock<ILog>().Object);
 
                 var expectedCount = _articles.Count();
-                var allArticles = sut.GetEntities();
+
+                var allArticles = sut.GetEntities().ToList();
                 
+                var noArticleHasChildren = allArticles.All(x => x.Authors.IsNullOrEmpty() && x.Subjects.IsNullOrEmpty());
+
                 mockRepo.VerifyAll();
 
-                Assert.Equal(expectedCount, allArticles.Count());
+                Assert.Equal(expectedCount, allArticles.Count);
+                Assert.True(noArticleHasChildren);
             }
         }
 
@@ -64,8 +69,8 @@ namespace BusinessLayer.Tests
                 var expectedCount = _articles.Count();
 
                 var allArticlesWithChildren = sut.GetFullEntities().ToList();
-
-                var atLeastOneArticleHasChildren = allArticlesWithChildren.Any(x => x.Authors != null && x.Subjects != null);
+                
+                var atLeastOneArticleHasChildren = allArticlesWithChildren.Any(x => !x.Authors.IsNullOrEmpty() && !x.Subjects.IsNullOrEmpty());
 
                 mockRepo.VerifyAll();
                 
