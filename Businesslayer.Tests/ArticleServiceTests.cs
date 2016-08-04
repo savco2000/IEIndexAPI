@@ -63,11 +63,14 @@ namespace BusinessLayer.Tests
 
                 var expectedCount = _articles.Count();
 
-                var allArticlesWithChildren = sut.GetFullEntities();
+                var allArticlesWithChildren = sut.GetFullEntities().ToList();
+
+                var atLeastOneArticleHasChildren = allArticlesWithChildren.Any(x => x.Authors != null && x.Subjects != null);
 
                 mockRepo.VerifyAll();
                 
-                Assert.Equal(expectedCount, allArticlesWithChildren.Count());
+                Assert.Equal(expectedCount, allArticlesWithChildren.Count);
+                Assert.True(atLeastOneArticleHasChildren);
             }
         }
     }
