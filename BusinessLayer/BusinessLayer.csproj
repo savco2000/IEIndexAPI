@@ -64,6 +64,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Mappers\ArticleToArticleVMMapper.cs" />
     <Compile Include="Mappers\ArticleVMToArticleMapper.cs" />
+    <Compile Include="Mappers\AuthorToAuthorVMMapper.cs" />
     <Compile Include="Mappers\IMapToNew.cs" />
     <Compile Include="MappingProfile.cs" />
     <Compile Include="SearchFilters\ArticleSearchFilter.cs" />

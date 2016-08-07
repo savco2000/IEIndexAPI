@@ -17,11 +17,11 @@ namespace BusinessLayer.Mappers
                 PublicationYear = source.PublicationYear.GetEnumDescription(),
                 IsSupplement = source.IsSupplement,
                 Hyperlink = source.Hyperlink,
-                Authors = source.Authors.Select(x => new AuthorVM
+                Authors = source.Authors.Select(author => new AuthorVM
                 {
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    Suffix = x.Suffix == Suffixes.Invalid ? null : x.Suffix.GetEnumDescription()
+                    FirstName = author.FirstName,
+                    LastName = author.LastName,
+                    Suffix = author.Suffix == Suffixes.Invalid ? null : author.Suffix.GetEnumDescription()
                 }),
                 Subjects = source.Subjects.Select(x => new SubjectVM { Name = x.Name })
             };
