@@ -67,6 +67,7 @@
     <Compile Include="Mappers\AuthorToAuthorVMMapper.cs" />
     <Compile Include="Mappers\AuthorVMToAuthorMapper.cs" />
     <Compile Include="Mappers\IMapToNew.cs" />
+    <Compile Include="Mappers\SubjectToSubjectVMMapper.cs" />
     <Compile Include="MappingProfile.cs" />
     <Compile Include="SearchFilters\ArticleSearchFilter.cs" />
     <Compile Include="SearchFilters\AuthorSearchFilter.cs" />

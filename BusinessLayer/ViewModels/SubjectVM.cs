@@ -5,7 +5,7 @@ namespace BusinessLayer.ViewModels
     public class SubjectVM
     {
         public string Name { get; set; }
-        public IList<ArticleVM> Articles { get; set; }
+        public IEnumerable<ArticleVM> Articles { get; set; }
 
         public SubjectVM()
         {
