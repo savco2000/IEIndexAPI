@@ -13,13 +13,13 @@ namespace BusinessLayer.Mappers
             {
                 FirstName = source.FirstName,
                 LastName = source.LastName,
-                Suffix = source.Suffix == Suffixes.Invalid ? null : source.Suffix.GetEnumDescription(),
+                Suffix = source.Suffix.GetEnumDescription(),
                 Articles = source.Articles.Select(article => new ArticleVM
                 {
                     Title = article.Title,
                     Page = article.Page,
-                    Issue = article.Issue == Issues.Invalid ? null : article.Issue.GetEnumDescription(),
-                    PublicationYear = article.PublicationYear == PublicationYears.Invalid ? null : article.PublicationYear.GetEnumDescription(),
+                    Issue = article.Issue.GetEnumDescription(),
+                    PublicationYear = article.PublicationYear.GetEnumDescription(),
                     IsSupplement = article.IsSupplement,
                     Hyperlink = article.Hyperlink
                 })

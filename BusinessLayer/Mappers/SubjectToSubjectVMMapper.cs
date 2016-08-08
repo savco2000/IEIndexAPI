@@ -16,8 +16,8 @@ namespace BusinessLayer.Mappers
                 {
                     Title = article.Title,
                     Page = article.Page,
-                    Issue = article.Issue == Issues.Invalid ? null : article.Issue.GetEnumDescription(),
-                    PublicationYear = article.PublicationYear == PublicationYears.Invalid ? null : article.PublicationYear.GetEnumDescription(),
+                    Issue = article.Issue.GetEnumDescription(),
+                    PublicationYear = article.PublicationYear.GetEnumDescription(),
                     IsSupplement = article.IsSupplement,
                     Hyperlink = article.Hyperlink
                 })

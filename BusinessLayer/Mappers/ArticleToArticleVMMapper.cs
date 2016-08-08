@@ -21,7 +21,7 @@ namespace BusinessLayer.Mappers
                 {
                     FirstName = author.FirstName,
                     LastName = author.LastName,
-                    Suffix = author.Suffix == Suffixes.Invalid ? null : author.Suffix.GetEnumDescription()
+                    Suffix = author.Suffix.GetEnumDescription()
                 }),
                 Subjects = source.Subjects.Select(x => new SubjectVM { Name = x.Name })
             };

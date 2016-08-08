@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 
 namespace BusinessLayer
 {
@@ -14,7 +11,9 @@ namespace BusinessLayer
 
             var attributes = (DescriptionAttribute[]) fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
 
-            return attributes.Length > 0 ? attributes[0].Description : value.ToString();
+            var enumDescription = attributes.Length > 0 ? attributes[0].Description : value.ToString();
+
+            return string.Equals(enumDescription, "Invalid", StringComparison.InvariantCultureIgnoreCase) ? null : enumDescription;
         }
 
         //public static Collection<T> ToCollection<T>(this IEnumerable<T> items)
