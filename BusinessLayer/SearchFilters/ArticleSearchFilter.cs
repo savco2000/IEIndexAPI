@@ -16,7 +16,7 @@ namespace BusinessLayer.SearchFilters
 
         public Expression<Func<Article, bool>> Filter()
         {
-            var predicate = PredicateBuilder.True<Article>();
+            var predicate = PredicateBuilder.New<Article>();
 
             if (!string.IsNullOrWhiteSpace(Title))
                 predicate = predicate.And(p => p.Title.ToLower() == Title.ToLower());

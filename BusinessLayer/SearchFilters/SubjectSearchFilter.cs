@@ -12,7 +12,7 @@ namespace BusinessLayer.SearchFilters
         public string Name { get; set; }
         public Expression<Func<Subject, bool>> Filter()
         {
-            var predicate = PredicateBuilder.True<Subject>();
+            var predicate = PredicateBuilder.New<Subject>();
 
             if (!string.IsNullOrWhiteSpace(Name))
                 predicate = predicate.And(p => p.Name.ToLower() == Name.ToLower());
