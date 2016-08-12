@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using BusinessLayer.ViewModels;
 using DataLayer.DomainModels;
+using Moq;
 
 namespace BusinessLayer.Tests.CollectionFixtures
 {
     public class ArticleServiceFixture
     {
+        public Mock<IMapper> MockMapper;
         public Article NewArticle { get; set; }
         public Article ExistingArticle { get; set; }
         public IQueryable<Article> Articles { get; set; }
@@ -13,6 +18,8 @@ namespace BusinessLayer.Tests.CollectionFixtures
 
         public ArticleServiceFixture()
         {
+            MockMapper = CreateMockMapper();
+
             NewArticle = new Article
             {
                 Title = "All-in-One Comprehensive Immigration Reform",
@@ -36,6 +43,143 @@ namespace BusinessLayer.Tests.CollectionFixtures
 
             Articles = CreateArticles().AsQueryable();
             ArticlesWithChildren = CreateArticlesWithChildren().AsQueryable();
+        }
+
+        private static Mock<IMapper> CreateMockMapper()
+        {
+            var mockMapper = new Mock<IMapper>();
+
+            mockMapper.Setup(x => x.Map<ArticleVM>(It.IsAny<Article>()))
+                .Returns((Article source) =>
+                {
+                    var target = new ArticleVM
+                    {
+                        Title = source.Title,
+                        Page = source.Page,
+                        Issue = source.Issue.GetEnumDescription(),
+                        PublicationYear = source.PublicationYear.GetEnumDescription(),
+                        IsSupplement = source.IsSupplement,
+                        Hyperlink = source.Hyperlink,
+                        Authors = source.Authors.Select(author => new AuthorVM
+                        {
+                            FirstName = author.FirstName,
+                            LastName = author.LastName,
+                            Suffix = author.Suffix.GetEnumDescription()
+                        }),
+                        Subjects = source.Subjects.Select(x => new SubjectVM {Name = x.Name})
+                    };
+
+                    return target;
+                });
+
+            mockMapper.Setup(x => x.Map<Article>(It.IsAny<ArticleVM>()))
+               .Returns((ArticleVM source) =>
+               {
+                   var target = new Article
+                   {
+                       Title = source.Title,
+                       Page = source.Page,
+                       Issue = (Issues)Enum.Parse(typeof(Issues), source.Issue),
+                       PublicationYear = (PublicationYears)Enum.Parse(typeof(PublicationYears), source.PublicationYear),
+                       IsSupplement = source.IsSupplement,
+                       Hyperlink = source.Hyperlink,
+                       Authors = source.Authors.Select(author => new Author
+                       {
+                           FirstName = author.FirstName,
+                           LastName = author.LastName,
+                           Suffix = (Suffixes)Enum.Parse(typeof(Suffixes), author.Suffix)
+                       }) as ICollection<Author>,
+                       Subjects = source.Subjects.Select(subject => new Subject { Name = subject.Name }) as ICollection<Subject>
+                   };
+
+                   return target;
+               });
+
+            mockMapper.Setup(x => x.Map<AuthorVM>(It.IsAny<Author>()))
+                .Returns((Author source) =>
+                {
+                    var target = new AuthorVM
+                    {
+                        FirstName = source.FirstName,
+                        LastName = source.LastName,
+                        Suffix = source.Suffix.GetEnumDescription(),
+                        Articles = source.Articles.Select(article => new ArticleVM
+                        {
+                            Title = article.Title,
+                            Page = article.Page,
+                            Issue = article.Issue.GetEnumDescription(),
+                            PublicationYear = article.PublicationYear.GetEnumDescription(),
+                            IsSupplement = article.IsSupplement,
+                            Hyperlink = article.Hyperlink
+                        })
+                    };
+
+                    return target;
+                });
+
+            mockMapper.Setup(x => x.Map<Author>(It.IsAny<AuthorVM>()))
+                .Returns((AuthorVM source) =>
+                {
+                    var target = new Author
+                    {
+                        FirstName = source.FirstName,
+                        LastName = source.LastName,
+                        Suffix = (Suffixes)Enum.Parse(typeof(Suffixes), source.Suffix),
+                        Articles = source.Articles.Select(article => new Article
+                        {
+                            Title = article.Title,
+                            Page = article.Page,
+                            Issue = (Issues)Enum.Parse(typeof(Issues), article.Issue),
+                            PublicationYear = (PublicationYears)Enum.Parse(typeof(PublicationYears), article.PublicationYear),
+                            IsSupplement = article.IsSupplement,
+                            Hyperlink = article.Hyperlink
+                        }) as ICollection<Article>
+                    };
+
+                    return target;
+                });
+
+            mockMapper.Setup(x => x.Map<SubjectVM>(It.IsAny<Subject>()))
+                .Returns((Subject source) =>
+                {
+                    var target = new SubjectVM
+                    {
+                        Name = source.Name,
+                        Articles = source.Articles.Select(article => new ArticleVM
+                        {
+                            Title = article.Title,
+                            Page = article.Page,
+                            Issue = article.Issue.GetEnumDescription(),
+                            PublicationYear = article.PublicationYear.GetEnumDescription(),
+                            IsSupplement = article.IsSupplement,
+                            Hyperlink = article.Hyperlink
+                        })
+                    };
+
+                    return target;
+                });
+
+            mockMapper.Setup(x => x.Map<Subject>(It.IsAny<SubjectVM>()))
+                .Returns((SubjectVM source) =>
+                {
+                    var target = new Subject
+                    {
+                        Name = source.Name,
+                        Articles = source.Articles.Select(article => new Article
+                        {
+                            Title = article.Title,
+                            Page = article.Page,
+                            Issue = (Issues)Enum.Parse(typeof(Issues), article.Issue),
+                            PublicationYear = (PublicationYears)Enum.Parse(typeof(PublicationYears), article.PublicationYear),
+                            IsSupplement = article.IsSupplement,
+                            Hyperlink = article.Hyperlink
+                        }) as ICollection<Article>
+                    };
+
+                    return target;
+                });
+
+            return mockMapper;
         }
 
         private static IEnumerable<Article> CreateArticles()

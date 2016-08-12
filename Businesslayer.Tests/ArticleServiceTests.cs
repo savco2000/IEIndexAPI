@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using AutoMapper;
 using BusinessLayer.Services;
 using BusinessLayer.Tests.CollectionFixtures;
+using BusinessLayer.ViewModels;
 using Castle.Core.Internal;
 using DataLayer;
 using DataLayer.Contexts;
@@ -22,12 +23,14 @@ namespace BusinessLayer.Tests
     {
         private readonly IQueryable<Article> _articles, _articlesWithChildren;
         private readonly Mock<IEIndexContext> _mockContext;
+        private readonly Mock<IMapper> _mockMapper;
 
         public when_querying_for_articles(ArticleServiceFixture fixture)
         {
             _articles = fixture.Articles;
             _articlesWithChildren = fixture.ArticlesWithChildren;
             _mockContext = new Mock<IEIndexContext>();
+            _mockMapper = fixture.MockMapper;
         }
 
         [Fact]
@@ -39,7 +42,7 @@ namespace BusinessLayer.Tests
 
                 mockRepo.SetupGet(x => x.All).Returns(() => _articles);
 
-                var sut = new ArticleService(mockRepo.Object, new Mock<IMapper>().Object, new Mock<ILog>().Object);
+                var sut = new ArticleService(mockRepo.Object, _mockMapper.Object, new Mock<ILog>().Object);
 
                 var expectedCount = _articles.Count();
 
@@ -64,7 +67,7 @@ namespace BusinessLayer.Tests
                 mockRepo.Setup(x => x.AllIncluding(It.IsAny<Expression<Func<Article, object>>[]>()))
                     .Returns((Expression<Func<Article, object>>[] includeProperties) => _articlesWithChildren);
 
-                var sut = new ArticleService(mockRepo.Object, new Mock<IMapper>().Object, new Mock<ILog>().Object);
+                var sut = new ArticleService(mockRepo.Object, _mockMapper.Object, new Mock<ILog>().Object);
 
                 var expectedCount = _articles.Count();
 

@@ -4,7 +4,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper;
-using BusinessLayer.Mappers;
 using BusinessLayer.ViewModels;
 using DataLayer;
 using DataLayer.DomainModels;
@@ -44,11 +43,9 @@ namespace BusinessLayer.Services
                     query = query.Where(searchFilter);
 
                 var articles = query.ToList();
-              
-                var mapper = new ArticleToArticleVMMapper();
 
-                var articleVms = articles.Select(x => mapper.Map(x));
-
+                var articleVms = articles.Select(author => _mapper.Map<ArticleVM>(author));
+                
                 return articleVms;
             }
             catch (SqlException ex)
@@ -75,10 +72,8 @@ namespace BusinessLayer.Services
                     query = query.Where(searchFilter);
 
                 var articles = query.ToList();
-
-                var mapper = new ArticleToArticleVMMapper();
-
-                var articleVms = articles.Select(x => mapper.Map(x));
+               
+                var articleVms = articles.Select(author => _mapper.Map<ArticleVM>(author));
 
                 return articleVms;
             }
