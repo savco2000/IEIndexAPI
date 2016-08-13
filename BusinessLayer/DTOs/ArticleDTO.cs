@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace BusinessLayer.ViewModels
+namespace BusinessLayer.DTOs
 {
-    public class ArticleVM
+    public class ArticleDTO
     {
         public string Title { get; set; }
         public int Page { get; set; }
@@ -10,13 +10,13 @@ namespace BusinessLayer.ViewModels
         public string PublicationYear { get; set; }
         public bool IsSupplement { get; set; }
         public string Hyperlink { get; set; }
-        public IEnumerable<AuthorVM> Authors { get; set; }
-        public IEnumerable<SubjectVM> Subjects { get; set; }
+        public IEnumerable<string> Authors { get; set; }
+        public IEnumerable<string> Subjects { get; set; }
 
-        public ArticleVM()
+        public ArticleDTO()
         {
-            Authors = new List<AuthorVM>();
-            Subjects = new List<SubjectVM>();
+            Authors = new List<string>();
+            Subjects = new List<string>();
         }
     }
 }

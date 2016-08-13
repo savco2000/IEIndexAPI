@@ -72,9 +72,9 @@
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SubjectService.cs" />
-    <Compile Include="ViewModels\ArticleVM.cs" />
-    <Compile Include="ViewModels\AuthorVM.cs" />
-    <Compile Include="ViewModels\SubjectVM.cs" />
+    <Compile Include="DTOs\ArticleDTO.cs" />
+    <Compile Include="DTOs\AuthorDTO.cs" />
+    <Compile Include="DTOs\SubjectDTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataLayer\DataLayer.csproj">

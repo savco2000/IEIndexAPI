@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Linq;
 using AutoMapper;
-using BusinessLayer.ViewModels;
+using BusinessLayer.DTOs;
 using DataLayer.DomainModels;
 
 namespace BusinessLayer
@@ -9,23 +10,29 @@ namespace BusinessLayer
     {
         protected override void Configure()
         {
-            CreateMap<Article, ArticleVM>()
+            CreateMap<Article, ArticleDTO>()
                 .ForMember(dest => dest.Issue, opt => opt.MapFrom(src => src.Issue.GetEnumDescription()))
-                .ForMember(dest => dest.PublicationYear, opt => opt.MapFrom(src => src.PublicationYear.GetEnumDescription()));
+                .ForMember(dest => dest.PublicationYear, opt => opt.MapFrom(src => src.PublicationYear.GetEnumDescription()))
+                .ForMember(dest => dest.Authors, opt => opt.MapFrom(src => src.Authors.Select(author => author.FullName)))
+                .ForMember(dest => dest.Subjects, opt => opt.MapFrom(src => src.Subjects.Select(subject => subject.Name)));
 
-            CreateMap<ArticleVM, Article>()
-                .ForMember(dest => dest.Issue, opt => opt.MapFrom(src => (Issues) Enum.Parse(typeof(Issues), src.Issue)))
-                .ForMember(dest => dest.PublicationYear, opt => opt.MapFrom(src => (PublicationYears) Enum.Parse(typeof(PublicationYears), src.PublicationYear)));
-            
-            CreateMap<Author, AuthorVM>()
-                .ForMember(dest => dest.Suffix, opt => opt.MapFrom(src => src.Suffix.GetEnumDescription()));
+            //CreateMap<ArticleDTO, Article>()
+            //    .ForMember(dest => dest.Issue, opt => opt.MapFrom(src => (Issues) Enum.Parse(typeof(Issues), src.Issue)))
+            //    .ForMember(dest => dest.PublicationYear, opt => opt.MapFrom(src => (PublicationYears) Enum.Parse(typeof(PublicationYears), src.PublicationYear)));
 
-            CreateMap<AuthorVM, Author>()
-                .ForMember(dest => dest.Suffix, opt => opt.MapFrom(src => (Suffixes) Enum.Parse(typeof(Suffixes), src.Suffix)));
+            //CreateMap<Author, AuthorDTO>()
+            //    .ForMember(dest => dest.Suffix, opt => opt.MapFrom(src => src.Suffix.GetEnumDescription()))
+            //    .ForMember(dest => dest.Articles, opt => opt.MapFrom(src => src.Articles.Select(article => article.Title)));
+            CreateMap<Author, AuthorDTO>()
+                .ForMember(dest => dest.Articles, opt => opt.MapFrom(src => src.Articles.Select(article => article.Title)));
 
-            CreateMap<Subject, SubjectVM>();
+            //CreateMap<AuthorDTO, Author>()
+            //    .ForMember(dest => dest.Suffix, opt => opt.MapFrom(src => (Suffixes) Enum.Parse(typeof(Suffixes), src.Suffix)));
 
-            CreateMap<SubjectVM, Subject>();
+            CreateMap<Subject, SubjectDTO>()
+                .ForMember(dest => dest.Articles, opt => opt.MapFrom(src => src.Articles.Select(article => article.Title)));
+
+            //CreateMap<SubjectDTO, Subject>();
         }
     }
 }

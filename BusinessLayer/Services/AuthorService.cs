@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper;
-using BusinessLayer.ViewModels;
+using BusinessLayer.DTOs;
 using DataLayer;
 using DataLayer.DomainModels;
 using log4net;
@@ -12,7 +12,7 @@ using LinqKit;
 
 namespace BusinessLayer.Services
 {
-    public class AuthorService : BaseService<AuthorVM, Author>
+    public class AuthorService : BaseService<AuthorDTO, Author>
     {
         private readonly IMapper _mapper;
 
@@ -21,7 +21,7 @@ namespace BusinessLayer.Services
             _mapper = mapper;
         }
 
-        public override IEnumerable<AuthorVM> GetEntities(Expression<Func<Author, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
+        public override IEnumerable<AuthorDTO> GetEntities(Expression<Func<Author, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace BusinessLayer.Services
 
                 var authors = query.ToList();
 
-                var authorVms = authors.Select(author => _mapper.Map<AuthorVM>(author));
+                var authorVms = authors.Select(author => _mapper.Map<AuthorDTO>(author));
 
                 return authorVms;
             }
@@ -50,7 +50,7 @@ namespace BusinessLayer.Services
             }
         }
 
-        public override IEnumerable<AuthorVM> GetFullEntities(Expression<Func<Author, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
+        public override IEnumerable<AuthorDTO> GetFullEntities(Expression<Func<Author, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace BusinessLayer.Services
                 
                 var authors = query.ToList();
 
-                var authorVms = authors.Select(author => _mapper.Map<AuthorVM>(author));
+                var authorVms = authors.Select(author => _mapper.Map<AuthorDTO>(author));
 
                 return authorVms;
             }

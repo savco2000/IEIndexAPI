@@ -6,7 +6,6 @@ using System.Runtime.Serialization;
 using AutoMapper;
 using BusinessLayer.Services;
 using BusinessLayer.Tests.CollectionFixtures;
-using BusinessLayer.ViewModels;
 using Castle.Core.Internal;
 using DataLayer;
 using DataLayer.Contexts;
@@ -72,7 +71,7 @@ namespace BusinessLayer.Tests
                 var expectedCount = _articles.Count();
 
                 var allArticlesWithChildren = sut.GetFullEntities().ToList();
-                
+
                 var atLeastOneArticleHasChildren = allArticlesWithChildren.Any(x => !x.Authors.IsNullOrEmpty() && !x.Subjects.IsNullOrEmpty());
 
                 mockRepo.VerifyAll();

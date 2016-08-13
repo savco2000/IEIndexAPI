@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper;
-using BusinessLayer.ViewModels;
+using BusinessLayer.DTOs;
 using DataLayer;
 using DataLayer.DomainModels;
 using log4net;
@@ -12,7 +12,7 @@ using LinqKit;
 
 namespace BusinessLayer.Services
 {
-    public class ArticleService : BaseService<ArticleVM, Article>
+    public class ArticleService : BaseService<ArticleDTO, Article>
     {
         private readonly IMapper _mapper;
 
@@ -26,7 +26,7 @@ namespace BusinessLayer.Services
             _mapper = mapper;
         }
 
-        public override IEnumerable<ArticleVM> GetEntities(Expression<Func<Article, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
+        public override IEnumerable<ArticleDTO> GetEntities(Expression<Func<Article, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace BusinessLayer.Services
 
                 var articles = query.ToList();
 
-                var articleVms = articles.Select(author => _mapper.Map<ArticleVM>(author));
+                var articleVms = articles.Select(author => _mapper.Map<ArticleDTO>(author));
                 
                 return articleVms;
             }
@@ -55,7 +55,7 @@ namespace BusinessLayer.Services
             }
         }
 
-        public override IEnumerable<ArticleVM> GetFullEntities(Expression<Func<Article, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
+        public override IEnumerable<ArticleDTO> GetFullEntities(Expression<Func<Article, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace BusinessLayer.Services
 
                 var articles = query.ToList();
                
-                var articleVms = articles.Select(author => _mapper.Map<ArticleVM>(author));
+                var articleVms = articles.Select(author => _mapper.Map<ArticleDTO>(author));
 
                 return articleVms;
             }

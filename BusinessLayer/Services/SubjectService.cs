@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper;
-using BusinessLayer.ViewModels;
+using BusinessLayer.DTOs;
 using DataLayer;
 using DataLayer.DomainModels;
 using log4net;
@@ -12,7 +12,7 @@ using LinqKit;
 
 namespace BusinessLayer.Services
 {
-    public class SubjectService : BaseService<SubjectVM, Subject>
+    public class SubjectService : BaseService<SubjectDTO, Subject>
     {
         private readonly IMapper _mapper;
 
@@ -21,7 +21,7 @@ namespace BusinessLayer.Services
             _mapper = mapper;
         }
 
-        public override IEnumerable<SubjectVM> GetEntities(Expression<Func<Subject, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
+        public override IEnumerable<SubjectDTO> GetEntities(Expression<Func<Subject, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace BusinessLayer.Services
 
                 var subjects = query.ToList();
 
-                var subjectVms = subjects.Select(subject => _mapper.Map<SubjectVM>(subject));
+                var subjectVms = subjects.Select(subject => _mapper.Map<SubjectDTO>(subject));
 
                 return subjectVms;
             }
@@ -50,7 +50,7 @@ namespace BusinessLayer.Services
             }
         }
 
-        public override IEnumerable<SubjectVM> GetFullEntities(Expression<Func<Subject, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
+        public override IEnumerable<SubjectDTO> GetFullEntities(Expression<Func<Subject, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace BusinessLayer.Services
 
                 var subjects = query.ToList();
 
-                var subjectVms = subjects.Select(subject => _mapper.Map<SubjectVM>(subject));
+                var subjectVms = subjects.Select(subject => _mapper.Map<SubjectDTO>(subject));
 
                 return subjectVms;
             }
