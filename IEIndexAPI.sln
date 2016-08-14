@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IEIndexConsole", "IEIndexCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayer.Tests", "BusinessLayer.Tests\BusinessLayer.Tests.csproj", "{E5B4C93A-4C74-4C62-AD5A-E7F51B94A523}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{B4F8D382-11F9-475A-8F21-86E82F78EC2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8305BAB7-4E33-4F3F-AAD1-77FB639CAB87} = {B4F8D382-11F9-475A-8F21-86E82F78EC2A}
+		{E5B4C93A-4C74-4C62-AD5A-E7F51B94A523} = {B4F8D382-11F9-475A-8F21-86E82F78EC2A}
 	EndGlobalSection
 EndGlobal
