@@ -111,7 +111,7 @@ namespace BusinessLayer.Tests
                 Assert.Throws<SqlException>(() => sut.GetEntities());
                 Assert.Throws<SqlException>(() => sut.GetFullEntities());
 
-                mockLog.Verify(x => x.Error(It.IsAny<string>()), Times.Exactly(2));
+                mockLog.Verify(log => log.Error(It.IsAny<string>()), Times.Exactly(2));
             }
         }
     }
