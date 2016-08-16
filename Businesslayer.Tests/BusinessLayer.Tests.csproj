@@ -94,6 +94,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ArticleServiceTests.cs" />
+    <Compile Include="AuthorServiceTests.cs" />
     <Compile Include="CollectionFixtures\ArticleServiceCollection.cs" />
     <Compile Include="CollectionFixtures\ArticleServiceFixture.cs" />
     <Compile Include="CollectionFixtures\AuthorServiceCollection.cs" />
