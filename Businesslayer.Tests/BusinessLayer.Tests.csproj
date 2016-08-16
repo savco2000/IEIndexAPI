@@ -96,6 +96,7 @@
     <Compile Include="ArticleServiceTests.cs" />
     <Compile Include="CollectionFixtures\ArticleServiceCollection.cs" />
     <Compile Include="CollectionFixtures\ArticleServiceFixture.cs" />
+    <Compile Include="CollectionFixtures\AuthorServiceFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
