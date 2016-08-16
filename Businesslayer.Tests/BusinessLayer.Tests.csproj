@@ -99,6 +99,7 @@
     <Compile Include="CollectionFixtures\ArticleServiceFixture.cs" />
     <Compile Include="CollectionFixtures\AuthorServiceCollection.cs" />
     <Compile Include="CollectionFixtures\AuthorServiceFixture.cs" />
+    <Compile Include="CollectionFixtures\SubjectServiceFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
