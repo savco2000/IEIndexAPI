@@ -16,6 +16,11 @@ namespace BusinessLayer.Services
     {
         private readonly IMapper _mapper;
 
+        public SubjectService(Repository<Subject> repository, IMapper mapper, ILog log) : base(repository, mapper, log)
+        {
+            _mapper = mapper;
+        }
+
         public SubjectService(IUnitOfWork uow, IMapper mapper, ILog log) : base(uow, mapper, log)
         {
             _mapper = mapper;

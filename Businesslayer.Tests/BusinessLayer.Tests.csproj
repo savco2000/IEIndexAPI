@@ -99,8 +99,10 @@
     <Compile Include="CollectionFixtures\ArticleServiceFixture.cs" />
     <Compile Include="CollectionFixtures\AuthorServiceCollection.cs" />
     <Compile Include="CollectionFixtures\AuthorServiceFixture.cs" />
+    <Compile Include="CollectionFixtures\SubjectServiceCollection.cs" />
     <Compile Include="CollectionFixtures\SubjectServiceFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SubjectServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BusinessLayer\BusinessLayer.csproj">
