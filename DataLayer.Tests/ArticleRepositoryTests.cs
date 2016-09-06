@@ -38,20 +38,36 @@ namespace DataLayer.Tests
         }
 
         [Fact]
-        public void a_single_article_should_be_retrieved()
+        public void a_single_article_should_be_retrieved_if_it_exists()
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
                 var sut = new Repository<Article>(uow);
-                const int expectedId = 2;
+                const int expectedArticleId = 2;
                 const string expectedTitle = "From Undocumented Immigrant to Brain Surgeon: An Interview with Alfredo Quiñones-Hinojosa";
-                var article = sut.Find(expectedId);
+                var article = sut.Find(expectedArticleId);
 
                 _fixture.MockContext.VerifyAll();
 
                 Assert.NotNull(article);
-                Assert.Equal(expectedId, article.Id);
+                Assert.Equal(expectedArticleId, article.Id);
                 Assert.Equal(expectedTitle.ToLowerInvariant(), article.Title.ToLowerInvariant());
+            }
+        }
+
+        [Fact]
+        public void no_article_should_be_retrieved_if_it_doesnt_exist()
+        {
+            using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
+            {
+                var sut = new Repository<Article>(uow);
+                const int nonExistentArticleId = 9999999;
+                
+                var article = sut.Find(nonExistentArticleId);
+
+                _fixture.MockContext.VerifyAll();
+
+                Assert.Null(article);
             }
         }
     }
