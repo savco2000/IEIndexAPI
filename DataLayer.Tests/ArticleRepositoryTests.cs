@@ -22,15 +22,16 @@ namespace DataLayer.Tests
         [Fact]
         public void all_articles_should_be_retrieved()
         {
+            var expectedCount = _fixture.Articles.Count();
+
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
                 var sut = new Repository<Article>(uow);
-
-                var expectedCount = _fixture.Articles.Count();
+                
                 var allArticles = sut.All;
                 var allArticlesWithChildren = sut.AllIncluding();
 
-                _fixture.MockContext.VerifyAll();
+                //_fixture.MockContext.Verify(x => x.Set<Article>(), Times.Exactly(2));
 
                 Assert.Equal(expectedCount, allArticles.Count());
                 Assert.Equal(expectedCount, allArticlesWithChildren.Count());
@@ -46,8 +47,8 @@ namespace DataLayer.Tests
                 const int expectedArticleId = 2;
                 const string expectedTitle = "From Undocumented Immigrant to Brain Surgeon: An Interview with Alfredo Quiñones-Hinojosa";
                 var article = sut.Find(expectedArticleId);
-
-                _fixture.MockContext.VerifyAll();
+                
+                _fixture.MockContext.Verify(x => x.Set<Article>(), Times.Once);
 
                 Assert.NotNull(article);
                 Assert.Equal(expectedArticleId, article.Id);
@@ -65,7 +66,7 @@ namespace DataLayer.Tests
                 
                 var article = sut.Find(nonExistentArticleId);
 
-                _fixture.MockContext.VerifyAll();
+                _fixture.MockContext.Verify(x => x.Set<Article>(), Times.Once);
 
                 Assert.Null(article);
             }
@@ -88,35 +89,73 @@ namespace DataLayer.Tests
         [Fact]
         public void if_article_is_new_then_it_should_be_saved()
         {
+            var originalCount = _fixture.Articles.Count();
+
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
                 var sut = new Repository<Article>(uow);
 
                 sut.InsertOrUpdate(_fixture.NewArticle);
                 sut.Save();
-
-                _fixture.MockContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Once);
-                _fixture.MockContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Never);
             }
 
+            _fixture.MockContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Once);
+            _fixture.MockContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Never);
             _fixture.MockContext.Verify(x => x.SaveChanges(), Times.Once);
+
+            var finalCount = _fixture.Articles.Count();
+
+            var expectedCount = originalCount + 1;
+            
+            Assert.Equal(expectedCount, finalCount);
         }
 
         [Fact]
-        public void if_article_is_not_new_then_it_should_be_updated()
+        public void if_article_already_exists_then_it_should_be_updated()
         {
+            var originalCount = _fixture.Articles.Count();
+
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
                 var sut = new Repository<Article>(uow);
 
                 sut.InsertOrUpdate(_fixture.ExistingArticle);
                 sut.Save();
-
-                _fixture.MockContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Never);
-                _fixture.MockContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Once);
             }
 
+            _fixture.MockContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Never);
+            _fixture.MockContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Once);
             _fixture.MockContext.Verify(x => x.SaveChanges(), Times.Once);
+            
+            var finalCount = _fixture.Articles.Count();
+
+            var expectedCount = originalCount;
+
+            Assert.Equal(expectedCount, finalCount);
+        }
+
+        [Fact]
+        public void if_article_is_null_then_nothing_should_happen()
+        {
+            var originalCount = _fixture.Articles.Count();
+
+            using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
+            {
+                var sut = new Repository<Article>(uow);
+
+                sut.InsertOrUpdate(null);
+                sut.Save();
+            }
+
+            _fixture.MockContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Never);
+            _fixture.MockContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Never);
+            _fixture.MockContext.Verify(x => x.SaveChanges(), Times.Once);
+            
+            var finalCount = _fixture.Articles.Count();
+
+            var expectedCount = originalCount;
+
+            Assert.Equal(expectedCount, finalCount);
         }
     }
 

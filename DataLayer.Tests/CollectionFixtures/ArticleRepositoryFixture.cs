@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using DataLayer.Contexts;
@@ -151,6 +152,26 @@ namespace DataLayer.Tests.CollectionFixtures
 
             MockContext = new Mock<IEIndexContext>();
             MockContext.Setup(m => m.Set<Article>()).Returns(mockSet.Object);
+
+            MockContext.Setup(x => x.SetAdd(It.IsAny<object>())).Callback<object>(entity =>
+            {
+                var articles = Articles.ToList();
+                articles.Add((Article) entity);
+                Articles = articles.AsQueryable();
+            });
+
+            MockContext.Setup(x => x.SetModified(It.IsAny<object>())).Callback<object>(entity =>
+            {
+                var updatedArticle = (Article) entity;
+
+                var articles = Articles.ToList();
+                var originalArticle = articles.Single(article => article.Id == updatedArticle.Id);
+
+                articles.Remove(originalArticle);
+                articles.Add(updatedArticle);
+
+                Articles = articles.AsQueryable();
+            });
         }
     }
 }

@@ -42,6 +42,8 @@ namespace DataLayer
        
         public void InsertOrUpdate(TEntity entity)
         {
+            if(entity == null) return;
+
             if (entity.IsNewEntity)
                 _context.SetAdd(entity);
             else
