@@ -3,9 +3,9 @@ using System.Linq.Expressions;
 using DataLayer.DomainModels;
 using LinqKit;
 
-namespace BusinessLayer.SearchBindingModels
+namespace BusinessLayer.SearchFilters
 {
-    public class ArticleSearchBindingModel : ISearchBindingModel<Article>
+    public class ArticleSearchFilter : ISearchFilter<Article>
     {
         public string PageSize { get; set; }
         public string PageNumber { get; set; }
@@ -14,19 +14,19 @@ namespace BusinessLayer.SearchBindingModels
         public string PublicationYear { get; set; }
         public bool? IsSupplement { get; set; }
 
-        public Expression<Func<Article, bool>> SearchFilter()
+        public Expression<Func<Article, bool>> Filter()
         {
-            var predicate = PredicateBuilder.True<Article>();
+            var predicate = PredicateBuilder.New<Article>();
 
             if (!string.IsNullOrWhiteSpace(Title))
                 predicate = predicate.And(p => p.Title.ToLower() == Title.ToLower());
-
-            var issue = (Issues)Enum.Parse(typeof(Issues), Issue);
-            if (!string.IsNullOrWhiteSpace(Issue))
+          
+            Issues issue;
+            if (Enum.TryParse(Issue, true, out issue))
                 predicate = predicate.And(p => p.Issue == issue);
-
-            var publicationYear = (PublicationYears)Enum.Parse(typeof(PublicationYears), PublicationYear);
-            if (!string.IsNullOrWhiteSpace(Title))
+           
+            PublicationYears publicationYear;
+            if (Enum.TryParse(PublicationYear, true, out publicationYear))
                 predicate = predicate.And(p => p.PublicationYear == publicationYear);
 
             if (IsSupplement.HasValue)

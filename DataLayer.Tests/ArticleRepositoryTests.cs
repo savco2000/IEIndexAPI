@@ -1,6 +1,5 @@
 ﻿using DataLayer.Contexts;
 using DataLayer.DomainModels;
-using DataLayer.Repositories;
 using Moq;
 using Xunit;
 using System.Linq;
@@ -10,49 +9,94 @@ namespace DataLayer.Tests
 {
     [Trait("Category","ArticleRepository Unit Tests")]
     [Collection("ArticleRepository Collection")]
-    public class when_querying_for_articles
+    public class when_querying_for_a_single_article
     {
         private readonly ArticleRepositoryFixture _fixture;
 
-        public when_querying_for_articles(ArticleRepositoryFixture fixture)
+        public when_querying_for_a_single_article(ArticleRepositoryFixture fixture)
+        {
+            fixture.MockContext.ResetCalls();
+            _fixture = fixture;
+        }
+        
+        [Fact]
+        public void article_should_be_retrieved_if_it_exists()
+        {
+            using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
+            {
+                var sut = new Repository<Article>(uow);
+                const int expectedArticleId = 2;
+                const string expectedTitle = "From Undocumented Immigrant to Brain Surgeon: An Interview with Alfredo Quiñones-Hinojosa";
+                var article = sut.Find(expectedArticleId);
+                
+                //_fixture.MockContext.Verify(x => x.Set<Article>(), Times.Once);
+
+                Assert.NotNull(article);
+                Assert.Equal(expectedArticleId, article.Id);
+                Assert.Equal(expectedTitle.ToLowerInvariant(), article.Title.ToLowerInvariant());
+            }
+        }
+
+        [Fact]
+        public void no_article_should_be_retrieved_if_it_doesnt_exist()
+        {
+            using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
+            {
+                var sut = new Repository<Article>(uow);
+                const int nonExistentArticleId = 9999999;
+                
+                var article = sut.Find(nonExistentArticleId);
+
+                //_fixture.MockContext.Verify(x => x.Set<Article>(), Times.Once);
+
+                Assert.Null(article);
+            }
+        }
+    }
+
+    [Trait("Category", "ArticleRepository Unit Tests")]
+    [Collection("ArticleRepository Collection")]
+    public class when_querying_for_multiple_articles
+    {
+        private readonly ArticleRepositoryFixture _fixture;
+
+        public when_querying_for_multiple_articles(ArticleRepositoryFixture fixture)
         {
             fixture.MockContext.ResetCalls();
             _fixture = fixture;
         }
 
         [Fact]
-        public void all_articles_should_be_retrieved()
+        public void articles_should_be_retrieveable_without_their_children()
         {
+            var expectedCount = _fixture.Articles.Count();
+
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
                 var sut = new Repository<Article>(uow);
 
-                var expectedCount = _fixture.Articles.Count();
                 var allArticles = sut.All;
-                var allArticlesWithChildren = sut.AllIncluding();
 
-                _fixture.MockContext.VerifyAll();
+                //_fixture.MockContext.Verify(x => x.Set<Article>(), Times.Exactly(2));
 
                 Assert.Equal(expectedCount, allArticles.Count());
-                Assert.Equal(expectedCount, allArticlesWithChildren.Count());
             }
         }
 
         [Fact]
-        public void a_single_article_should_be_retrieved()
+        public void articles_should_be_retrieveable_with_their_children()
         {
+            var expectedCount = _fixture.Articles.Count();
+
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
                 var sut = new Repository<Article>(uow);
-                const int expectedId = 2;
-                const string expectedTitle = "From Undocumented Immigrant to Brain Surgeon: An Interview with Alfredo Quiñones-Hinojosa";
-                var article = sut.Find(expectedId);
 
-                _fixture.MockContext.VerifyAll();
+                var allArticlesWithChildren = sut.AllIncluding();
 
-                Assert.NotNull(article);
-                Assert.Equal(expectedId, article.Id);
-                Assert.Equal(expectedTitle.ToLowerInvariant(), article.Title.ToLowerInvariant());
+                //_fixture.MockContext.Verify(x => x.Set<Article>(), Times.Exactly(2));
+
+                Assert.Equal(expectedCount, allArticlesWithChildren.Count());
             }
         }
     }
@@ -71,37 +115,75 @@ namespace DataLayer.Tests
         }
 
         [Fact]
-        public void if_article_is_new_then_it_should_be_saved()
+        public void if_article_is_new_then_it_should_be_persisted()
         {
+            var originalCount = _fixture.Articles.Count();
+
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
                 var sut = new Repository<Article>(uow);
 
                 sut.InsertOrUpdate(_fixture.NewArticle);
                 sut.Save();
-
-                _fixture.MockContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Once);
-                _fixture.MockContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Never);
             }
 
+            _fixture.MockContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Once);
+            _fixture.MockContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Never);
             _fixture.MockContext.Verify(x => x.SaveChanges(), Times.Once);
+
+            var finalCount = _fixture.Articles.Count();
+
+            var expectedCount = originalCount + 1;
+            
+            Assert.Equal(expectedCount, finalCount);
         }
 
         [Fact]
-        public void if_article_is_not_new_then_it_should_be_updated()
+        public void if_article_already_exists_then_it_should_be_updated()
         {
+            var originalCount = _fixture.Articles.Count();
+
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
                 var sut = new Repository<Article>(uow);
 
                 sut.InsertOrUpdate(_fixture.ExistingArticle);
                 sut.Save();
-
-                _fixture.MockContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Never);
-                _fixture.MockContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Once);
             }
 
+            _fixture.MockContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Never);
+            _fixture.MockContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Once);
             _fixture.MockContext.Verify(x => x.SaveChanges(), Times.Once);
+            
+            var finalCount = _fixture.Articles.Count();
+
+            var expectedCount = originalCount;
+
+            Assert.Equal(expectedCount, finalCount);
+        }
+
+        [Fact]
+        public void if_article_is_null_then_nothing_should_happen()
+        {
+            var originalCount = _fixture.Articles.Count();
+
+            using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
+            {
+                var sut = new Repository<Article>(uow);
+
+                sut.InsertOrUpdate(null);
+                sut.Save();
+            }
+
+            _fixture.MockContext.Verify(x => x.SetAdd(It.IsAny<Article>()), Times.Never);
+            _fixture.MockContext.Verify(x => x.SetModified(It.IsAny<Article>()), Times.Never);
+            _fixture.MockContext.Verify(x => x.SaveChanges(), Times.Once);
+            
+            var finalCount = _fixture.Articles.Count();
+
+            var expectedCount = originalCount;
+
+            Assert.Equal(expectedCount, finalCount);
         }
     }
 

@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using DataLayer.Contexts;
 using DataLayer.DomainModels;
-using DataLayer.Repositories;
 using DataLayer.Tests.CollectionFixtures;
 using Moq;
 using Xunit;
