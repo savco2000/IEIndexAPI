@@ -24,7 +24,7 @@ namespace DataLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Author>(uow);
+                var sut = new GenericRepository<Author>(uow);
 
                 var expectedCount = _fixture.Authors.Count();
                 var allAuthors = sut.All;
@@ -42,7 +42,7 @@ namespace DataLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Author>(uow);
+                var sut = new GenericRepository<Author>(uow);
                 const int expectedId = 2;
                 const string expectedFullName = "Elaina Loveland";
                 var author = sut.Find(expectedId);
@@ -74,7 +74,7 @@ namespace DataLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Author>(uow);
+                var sut = new GenericRepository<Author>(uow);
 
                 sut.InsertOrUpdate(_fixture.NewAuthor);
                 sut.Save();
@@ -91,7 +91,7 @@ namespace DataLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Author>(uow);
+                var sut = new GenericRepository<Author>(uow);
 
                 sut.InsertOrUpdate(_fixture.ExistingAuthor);
                 sut.Save();
@@ -124,7 +124,7 @@ namespace DataLayer.Tests
 
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Author>(uow);
+                var sut = new GenericRepository<Author>(uow);
 
                 sut.Delete(articleId);
                 sut.Save();
@@ -145,7 +145,7 @@ namespace DataLayer.Tests
 
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Author>(uow);
+                var sut = new GenericRepository<Author>(uow);
 
                 sut.Delete(nonExistingArticleId);
                 sut.Save();

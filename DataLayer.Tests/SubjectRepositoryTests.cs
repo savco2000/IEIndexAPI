@@ -24,7 +24,7 @@ namespace DataLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Subject>(uow);
+                var sut = new GenericRepository<Subject>(uow);
 
                 var expectedCount = _fixture.Subjects.Count();
                 var allSubjects = sut.All;
@@ -42,7 +42,7 @@ namespace DataLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Subject>(uow);
+                var sut = new GenericRepository<Subject>(uow);
                 const int expectedId = 2;
                 const string expectedName = "Global Citizenship";
                 var subject = sut.Find(expectedId);
@@ -74,7 +74,7 @@ namespace DataLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Subject>(uow);
+                var sut = new GenericRepository<Subject>(uow);
 
                 sut.InsertOrUpdate(_fixture.NewSubject);
                 sut.Save();
@@ -91,7 +91,7 @@ namespace DataLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Subject>(uow);
+                var sut = new GenericRepository<Subject>(uow);
 
                 sut.InsertOrUpdate(_fixture.ExistingSubject);
                 sut.Save();
@@ -124,7 +124,7 @@ namespace DataLayer.Tests
 
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Subject>(uow);
+                var sut = new GenericRepository<Subject>(uow);
 
                 sut.Delete(articleId);
                 sut.Save();
@@ -145,7 +145,7 @@ namespace DataLayer.Tests
 
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Subject>(uow);
+                var sut = new GenericRepository<Subject>(uow);
 
                 sut.Delete(nonExistingArticleId);
                 sut.Save();

@@ -11,12 +11,12 @@ namespace BusinessLayer.Services
 {
     public abstract class BaseService<TEntityVM, TEntity> where TEntity : Entity where TEntityVM : class, new()
     {
-        protected readonly Repository<TEntity> Repository;
+        protected readonly GenericRepository<TEntity> Repository;
         protected readonly ILog Log;
 
         private readonly IMapper _mapper;
 
-        protected BaseService(Repository<TEntity> repository, IMapper mapper, ILog log)
+        protected BaseService(GenericRepository<TEntity> repository, IMapper mapper, ILog log)
         {
             Repository = repository;
             Log = log;
@@ -25,7 +25,7 @@ namespace BusinessLayer.Services
 
         protected BaseService(IUnitOfWork uow, IMapper mapper, ILog log)
         {
-            Repository = new Repository<TEntity>(uow);
+            Repository = new GenericRepository<TEntity>(uow);
             Log = log;
             _mapper = mapper;
         }

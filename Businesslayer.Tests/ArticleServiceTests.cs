@@ -37,7 +37,7 @@ namespace BusinessLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_mockContext.Object))
             {
-                var mockRepo = new Mock<Repository<Article>>(uow);
+                var mockRepo = new Mock<GenericRepository<Article>>(uow);
 
                 mockRepo.SetupGet(x => x.All).Returns(() => _articles);
 
@@ -61,7 +61,7 @@ namespace BusinessLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_mockContext.Object))
             {
-                var mockRepo = new Mock<Repository<Article>>(uow);
+                var mockRepo = new Mock<GenericRepository<Article>>(uow);
 
                 mockRepo.Setup(x => x.AllIncluding(It.IsAny<Expression<Func<Article, object>>[]>()))
                     .Returns((Expression<Func<Article, object>>[] includeProperties) => _articlesWithChildren);
@@ -98,7 +98,7 @@ namespace BusinessLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_mockContext.Object))
             {
-                var mockRepo = new Mock<Repository<Article>>(uow);
+                var mockRepo = new Mock<GenericRepository<Article>>(uow);
 
                 var exception = FormatterServices.GetUninitializedObject(typeof(SqlException)) as SqlException;
 

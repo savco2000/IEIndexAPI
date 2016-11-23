@@ -16,7 +16,7 @@ namespace BusinessLayer.Services
     {
         private readonly IMapper _mapper;
 
-        public AuthorService(Repository<Author> repository, IMapper mapper, ILog log) : base(repository, mapper, log)
+        public AuthorService(GenericRepository<Author> repository, IMapper mapper, ILog log) : base(repository, mapper, log)
         {
             _mapper = mapper;
         }

@@ -24,7 +24,7 @@ namespace DataLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Article>(uow);
+                var sut = new GenericRepository<Article>(uow);
                 const int expectedArticleId = 2;
                 const string expectedTitle = "From Undocumented Immigrant to Brain Surgeon: An Interview with Alfredo Quiñones-Hinojosa";
                 var article = sut.Find(expectedArticleId);
@@ -42,7 +42,7 @@ namespace DataLayer.Tests
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Article>(uow);
+                var sut = new GenericRepository<Article>(uow);
                 const int nonExistentArticleId = 9999999;
                 
                 var article = sut.Find(nonExistentArticleId);
@@ -73,7 +73,7 @@ namespace DataLayer.Tests
 
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Article>(uow);
+                var sut = new GenericRepository<Article>(uow);
 
                 var allArticles = sut.All;
 
@@ -90,7 +90,7 @@ namespace DataLayer.Tests
 
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Article>(uow);
+                var sut = new GenericRepository<Article>(uow);
 
                 var allArticlesWithChildren = sut.AllIncluding();
 
@@ -121,7 +121,7 @@ namespace DataLayer.Tests
 
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Article>(uow);
+                var sut = new GenericRepository<Article>(uow);
 
                 sut.InsertOrUpdate(_fixture.NewArticle);
                 sut.Save();
@@ -145,7 +145,7 @@ namespace DataLayer.Tests
 
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Article>(uow);
+                var sut = new GenericRepository<Article>(uow);
 
                 sut.InsertOrUpdate(_fixture.ExistingArticle);
                 sut.Save();
@@ -169,7 +169,7 @@ namespace DataLayer.Tests
 
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Article>(uow);
+                var sut = new GenericRepository<Article>(uow);
 
                 sut.InsertOrUpdate(null);
                 sut.Save();
@@ -208,7 +208,7 @@ namespace DataLayer.Tests
 
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Article>(uow);
+                var sut = new GenericRepository<Article>(uow);
 
                 sut.Delete(articleId);
                 sut.Save();
@@ -229,7 +229,7 @@ namespace DataLayer.Tests
 
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
             {
-                var sut = new Repository<Article>(uow);
+                var sut = new GenericRepository<Article>(uow);
 
                 sut.Delete(nonExistingArticleId);
                 sut.Save();

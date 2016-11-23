@@ -16,7 +16,7 @@ namespace BusinessLayer.Services
     {
         private readonly IMapper _mapper;
 
-        public ArticleService(Repository<Article> repository, IMapper mapper, ILog log) : base(repository, mapper, log)
+        public ArticleService(GenericRepository<Article> repository, IMapper mapper, ILog log) : base(repository, mapper, log)
         {
             _mapper = mapper;
         }

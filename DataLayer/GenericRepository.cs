@@ -18,27 +18,29 @@ namespace DataLayer
         void Save();
     }
 
-    public class Repository<TEntity> : IEntityRepository<TEntity> where TEntity : Entity
+    public class GenericRepository<TEntity> : IEntityRepository<TEntity> where TEntity : Entity
     {
         private readonly IUnitOfWork _uow;
         private readonly IEIndexContext _context;
+        internal DbSet<TEntity> _dbSet;
 
-        public virtual IQueryable<TEntity> All => _context.Set<TEntity>();       
+        public virtual IQueryable<TEntity> All => _dbSet;       
 
-        public Repository(IUnitOfWork uow)
+        public GenericRepository(IUnitOfWork uow)
         {
             _uow = uow;
             _context = uow.Context as IEIndexContext;
+            _dbSet = _context.Set<TEntity>();
         }
         public virtual IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            var entities = _context.Set<TEntity>().AsQueryable();
+            var entities = _dbSet.AsQueryable();
             return includeProperties.Aggregate(entities, (current, includeProperty) => current.Include(includeProperty));
         }
 
-        public TEntity Find(int id) => _context.Set<TEntity>().Find(id);
+        public TEntity Find(int id) => _dbSet.Find(id);
 
-        public void InsertGraph(TEntity entityGraph) => _context.Set<TEntity>().Add(entityGraph);
+        public void InsertGraph(TEntity entityGraph) => _dbSet.Add(entityGraph);
        
         public void InsertOrUpdate(TEntity entity)
         {
@@ -52,7 +54,7 @@ namespace DataLayer
 
         public void Delete(int id)
         {
-            var article = _context.Set<TEntity>().Find(id);
+            var article = _dbSet.Find(id);
             if (article == null) return;
             _context.Set<TEntity>().Remove(article);
         }
