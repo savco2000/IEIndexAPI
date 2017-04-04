@@ -44,7 +44,7 @@ namespace DataLayer
         {
             if(entity == null) return;
 
-            if (entity.IsNewEntity)
+            if (entity.IsTransient)
                 _context.SetAdd(entity);
             else
                 _context.SetModified(entity);

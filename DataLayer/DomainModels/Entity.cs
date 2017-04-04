@@ -6,7 +6,7 @@ namespace DataLayer.DomainModels
     {
         public virtual int Id { get; set; }
 
-        public bool IsNewEntity => Id == 0;
+        public bool IsTransient => Id == 0;
 
         public override bool Equals(object obj)
         {
@@ -27,7 +27,7 @@ namespace DataLayer.DomainModels
             return Id == other.Id;
         }
 
-        public static bool operator ==(Entity a, Entity b)
+        public static bool operator == (Entity a, Entity b)
         {
             if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
                 return true;
@@ -38,7 +38,7 @@ namespace DataLayer.DomainModels
             return a.Equals(b);
         }
 
-        public static bool operator !=(Entity a, Entity b) => !(a == b);
+        public static bool operator != (Entity a, Entity b) => !(a == b);
 
         public override int GetHashCode() => (GetType().ToString() + Id).GetHashCode();
 
