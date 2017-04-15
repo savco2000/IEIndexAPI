@@ -18,6 +18,6 @@ Perform the following tasks before running the application for the first time:
 	1. Set the DataLayer project as the startup project
 	2. Open the Package Manager Console and make sure "DataLayer" is selected in the "Default Project" dropdown
 	3. Run the following commands:
-		1. enable-migrations (skip this if you get a warning that "Migrations have already been enabled...")
-		2. add-migration Initial
-		3. update-database
+		a. enable-migrations (skip this if you get a warning that "Migrations have already been enabled...")
+		b. add-migration Initial
+		c. update-database
