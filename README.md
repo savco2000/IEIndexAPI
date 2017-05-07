@@ -4,7 +4,7 @@ Perform the following tasks before running the application for the first time:
 
 ## Database tasks
 
-Run the TSQL script below to create the needed logins, database, users and mapping of roles to the created user.
+Run the SQL script below to create the needed logins, database, users and mapping of roles to the created user.
 		
 ```sql
 USE master;  
