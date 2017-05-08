@@ -19,7 +19,7 @@ namespace DataLayer.Tests
             _fixture = fixture;
         }
 
-        [Fact]
+        [Fact(DisplayName = "All authors should be retrieved")]
         public void all_authors_should_be_retrieved()
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
@@ -37,7 +37,7 @@ namespace DataLayer.Tests
             }
         }
 
-        [Fact]
+        [Fact(DisplayName = "A single author should be retrieved")]
         public void a_single_author_should_be_retrieved()
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
@@ -68,8 +68,8 @@ namespace DataLayer.Tests
             fixture.MockContext.ResetCalls();
             _fixture = fixture;
         }
-
-        [Fact]
+                
+        [Fact(DisplayName = "If author is new then they should be saved")]
         public void if_author_is_new_then_they_should_be_saved()
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
@@ -86,7 +86,7 @@ namespace DataLayer.Tests
             _fixture.MockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
 
-        [Fact]
+        [Fact(DisplayName = "If author is not new then they should be updated")]
         public void if_author_is_not_new_then_they_should_be_updated()
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
@@ -116,7 +116,7 @@ namespace DataLayer.Tests
             _fixture = fixture;
         }
 
-        [Fact]
+        [Fact(DisplayName = "If subject exists then they should be removed")]
         public void if_subject_exists_then_they_should_be_removed()
         {
             var expectedCount = _fixture.Subjects.Count() - 1;
@@ -137,7 +137,7 @@ namespace DataLayer.Tests
             _fixture.MockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
 
-        [Fact]
+        [Fact(DisplayName = "If subject does not exist then nothing should happen")]
         public void if_subject_does_not_exist_then_nothing_should_happen()
         {
             var expectedCount = _fixture.Subjects.Count();

@@ -17,9 +17,9 @@ namespace DataLayer.Tests
         {
             fixture.MockContext.ResetCalls();
             _fixture = fixture;
-        }
+        }        
         
-        [Fact]
+        [Fact(DisplayName = "Article should be retrieved if it exists")]
         public void article_should_be_retrieved_if_it_exists()
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
@@ -37,7 +37,7 @@ namespace DataLayer.Tests
             }
         }
 
-        [Fact]
+        [Fact(DisplayName = "No article should be retrieved if it doesnt exist")]
         public void no_article_should_be_retrieved_if_it_doesnt_exist()
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_fixture.MockContext.Object))
@@ -65,8 +65,8 @@ namespace DataLayer.Tests
             fixture.MockContext.ResetCalls();
             _fixture = fixture;
         }
-
-        [Fact]
+                
+        [Fact(DisplayName = "No article should be retrieved if it doesnt exist")]
         public void articles_should_be_retrieveable_without_their_children()
         {
             var expectedCount = _fixture.Articles.Count();
@@ -83,7 +83,7 @@ namespace DataLayer.Tests
             }
         }
 
-        [Fact]
+        [Fact(DisplayName = "Articles should be retrieveable with their children")]
         public void articles_should_be_retrieveable_with_their_children()
         {
             var expectedCount = _fixture.Articles.Count();
@@ -114,7 +114,7 @@ namespace DataLayer.Tests
             _fixture = fixture;
         }
 
-        [Fact]
+        [Fact(DisplayName = "If article is new then it should be persisted")]
         public void if_article_is_new_then_it_should_be_persisted()
         {
             var originalCount = _fixture.Articles.Count();
@@ -138,7 +138,7 @@ namespace DataLayer.Tests
             Assert.Equal(expectedCount, finalCount);
         }
 
-        [Fact]
+        [Fact(DisplayName = "If article already exists then it should be updated")]
         public void if_article_already_exists_then_it_should_be_updated()
         {
             var originalCount = _fixture.Articles.Count();
@@ -162,7 +162,7 @@ namespace DataLayer.Tests
             Assert.Equal(expectedCount, finalCount);
         }
 
-        [Fact]
+        [Fact(DisplayName = "If article is null then nothing should happen")]
         public void if_article_is_null_then_nothing_should_happen()
         {
             var originalCount = _fixture.Articles.Count();
@@ -199,8 +199,8 @@ namespace DataLayer.Tests
 
             _fixture = fixture;
         }
-
-        [Fact]
+                
+        [Fact(DisplayName = "If article exists then it should be removed")]
         public void if_article_exists_then_it_should_be_removed()
         {
             var expectedCount = _fixture.Articles.Count() - 1;
@@ -221,7 +221,7 @@ namespace DataLayer.Tests
             _fixture.MockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
 
-        [Fact]
+        [Fact(DisplayName = "If article does not exist then nothing should happen")]
         public void if_article_does_not_exist_then_nothing_should_happen()
         {
             var expectedCount = _fixture.Articles.Count();

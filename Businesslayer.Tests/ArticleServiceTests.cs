@@ -32,7 +32,7 @@ namespace BusinessLayer.Tests
             _mockMapper = fixture.MockMapper;
         }
 
-        [Fact]
+        [Fact(DisplayName = "All articles should be retrieved minus their children")]
         public void all_articles_should_be_retrieved_minus_their_children()
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_mockContext.Object))
@@ -56,7 +56,7 @@ namespace BusinessLayer.Tests
             }
         }
 
-        [Fact]
+        [Fact(DisplayName = "All articles should be retrieved along with their children")]
         public void all_articles_should_be_retrieved_along_with_their_children()
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_mockContext.Object))
@@ -93,7 +93,7 @@ namespace BusinessLayer.Tests
             _mockContext = new Mock<IEIndexContext>();
         }
 
-        [Fact]
+        [Fact(DisplayName = "Then sql exception should be thrown and logged")]
         public void then_sql_exception_should_be_thrown_and_logged()
         {
             using (var uow = new UnitOfWork<IEIndexContext>(_mockContext.Object))
