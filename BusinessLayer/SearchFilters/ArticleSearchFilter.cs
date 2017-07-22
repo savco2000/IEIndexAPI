@@ -14,7 +14,7 @@ namespace BusinessLayer.SearchFilters
         public string PublicationYear { get; set; }
         public bool? IsSupplement { get; set; }
 
-        public Expression<Func<Article, bool>> Filter()
+        public Expression<Func<Article, bool>> BuildPredicate()
         {
             var predicate = PredicateBuilder.New<Article>();
 

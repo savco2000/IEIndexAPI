@@ -13,7 +13,7 @@ namespace BusinessLayer.SearchFilters
         public string LastName { get; set; }
         public string Suffix { get; set; }
         
-        public Expression<Func<Author, bool>> Filter()
+        public Expression<Func<Author, bool>> BuildPredicate()
         {
             var predicate = PredicateBuilder.New<Author>();
 

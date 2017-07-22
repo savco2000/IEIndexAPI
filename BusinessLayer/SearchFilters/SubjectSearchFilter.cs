@@ -10,7 +10,7 @@ namespace BusinessLayer.SearchFilters
         public string PageSize { get; set; }
         public string PageNumber { get; set; }
         public string Name { get; set; }
-        public Expression<Func<Subject, bool>> Filter()
+        public Expression<Func<Subject, bool>> BuildPredicate()
         {
             var predicate = PredicateBuilder.New<Subject>();
 

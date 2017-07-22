@@ -35,11 +35,11 @@ namespace IEIndexConsole
                 var articleService = new ArticleService(uow, mapper, log);
                 var filter = new ArticleSearchFilter { Issue = "fall"};
                 //var filter = new ArticleSearchFilter ();
-                var articles = articleService.GetEntities(filter.Filter(), pageSize: pageSize, pageNumber: pageNumber)
+                var articles = articleService.GetEntities(filter.BuildPredicate(), pageSize: pageSize, pageNumber: pageNumber)
                     .ToList();
                 //var articles = articleService.GetEntities(pageSize: pageSize, pageNumber: pageNumber)
                 //    .ToList();
-                var articlesWithChildren = articleService.GetFullEntities(filter.Filter(), pageSize: pageSize, pageNumber: pageNumber)
+                var articlesWithChildren = articleService.GetFullEntities(filter.BuildPredicate(), pageSize: pageSize, pageNumber: pageNumber)
                     .ToList();
             }
 

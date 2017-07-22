@@ -8,6 +8,6 @@ namespace BusinessLayer.SearchFilters
     {
         string PageSize { get; set; }
         string PageNumber { get; set; }
-        Expression<Func<TEntity, bool>> Filter();
+        Expression<Func<TEntity, bool>> BuildPredicate();
     }
 }
