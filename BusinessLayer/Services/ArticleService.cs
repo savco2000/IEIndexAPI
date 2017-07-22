@@ -16,17 +16,18 @@ namespace BusinessLayer.Services
     {
         private readonly IMapper _mapper;
 
-        public ArticleService(Repository<Article> repository, IMapper mapper, ILog log) : base(repository, mapper, log)
-        {
-            _mapper = mapper;
-        }
+        public ArticleService(Repository<Article> repository, IMapper mapper, ILog log) 
+            : base(repository, mapper, log) 
+                => _mapper = mapper;
+       
+        public ArticleService(IUnitOfWork uow, IMapper mapper, ILog log) 
+            : base(uow, mapper, log)
+                => _mapper = mapper;
 
-        public ArticleService(IUnitOfWork uow, IMapper mapper, ILog log) : base(uow, mapper, log)
-        {
-            _mapper = mapper;
-        }
-
-        public override IEnumerable<ArticleDTO> GetEntities(Expression<Func<Article, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
+        public override IEnumerable<ArticleDTO> GetEntities(Expression<Func<Article, bool>> searchFilter = null, 
+            bool orderDesc = false, 
+            int pageSize = 0, 
+            int pageNumber = 0)
         {
             try
             {
@@ -40,13 +41,9 @@ namespace BusinessLayer.Services
                 query = query.AsExpandable();
 
                 if (searchFilter != null)
-                    query = query.Where(searchFilter);
+                    query = query.Where(searchFilter);                
 
-                var articles = query.ToList();
-
-                var articleVms = articles.Select(author => _mapper.Map<ArticleDTO>(author));
-                
-                return articleVms;
+                return query.Select(author => _mapper.Map<ArticleDTO>(author)).ToList();               
             }
             catch (SqlException ex)
             {
@@ -55,7 +52,10 @@ namespace BusinessLayer.Services
             }
         }
 
-        public override IEnumerable<ArticleDTO> GetFullEntities(Expression<Func<Article, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
+        public override IEnumerable<ArticleDTO> GetFullEntities(Expression<Func<Article, bool>> searchFilter = null, 
+            bool orderDesc = false, 
+            int pageSize = 0, 
+            int pageNumber = 0)
         {
             try
             {
@@ -70,12 +70,8 @@ namespace BusinessLayer.Services
 
                 if (searchFilter != null)
                     query = query.Where(searchFilter);
-
-                var articles = query.ToList();
-               
-                var articleVms = articles.Select(author => _mapper.Map<ArticleDTO>(author));
-
-                return articleVms;
+                               
+                return query.Select(author => _mapper.Map<ArticleDTO>(author)).ToList();                
             }
             catch (SqlException ex)
             {

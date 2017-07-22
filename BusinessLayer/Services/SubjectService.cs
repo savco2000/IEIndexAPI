@@ -16,17 +16,18 @@ namespace BusinessLayer.Services
     {
         private readonly IMapper _mapper;
 
-        public SubjectService(Repository<Subject> repository, IMapper mapper, ILog log) : base(repository, mapper, log)
-        {
-            _mapper = mapper;
-        }
+        public SubjectService(Repository<Subject> repository, IMapper mapper, ILog log) 
+            : base(repository, mapper, log)
+                => _mapper = mapper;
 
-        public SubjectService(IUnitOfWork uow, IMapper mapper, ILog log) : base(uow, mapper, log)
-        {
-            _mapper = mapper;
-        }
+        public SubjectService(IUnitOfWork uow, IMapper mapper, ILog log) 
+            : base(uow, mapper, log)
+                => _mapper = mapper;
 
-        public override IEnumerable<SubjectDTO> GetEntities(Expression<Func<Subject, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
+        public override IEnumerable<SubjectDTO> GetEntities(Expression<Func<Subject, bool>> searchFilter = null, 
+            bool orderDesc = false, 
+            int pageSize = 0, 
+            int pageNumber = 0)
         {
             try
             {
@@ -40,13 +41,9 @@ namespace BusinessLayer.Services
                 query = query.AsExpandable();
 
                 if (searchFilter != null)
-                    query = query.Where(searchFilter);
+                    query = query.Where(searchFilter);               
 
-                var subjects = query.ToList();
-
-                var subjectVms = subjects.Select(subject => _mapper.Map<SubjectDTO>(subject));
-
-                return subjectVms;
+                return query.Select(subject => _mapper.Map<SubjectDTO>(subject)).ToList();                
             }
             catch (SqlException ex)
             {
@@ -55,7 +52,10 @@ namespace BusinessLayer.Services
             }
         }
 
-        public override IEnumerable<SubjectDTO> GetFullEntities(Expression<Func<Subject, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0)
+        public override IEnumerable<SubjectDTO> GetFullEntities(Expression<Func<Subject, bool>> searchFilter = null, 
+            bool orderDesc = false, 
+            int pageSize = 0, 
+            int pageNumber = 0)
         {
             try
             {
@@ -69,13 +69,9 @@ namespace BusinessLayer.Services
                 query = query.AsExpandable();
 
                 if (searchFilter != null)
-                    query = query.Where(searchFilter);
+                    query = query.Where(searchFilter);                
 
-                var subjects = query.ToList();
-
-                var subjectVms = subjects.Select(subject => _mapper.Map<SubjectDTO>(subject));
-
-                return subjectVms;
+                return query.Select(subject => _mapper.Map<SubjectDTO>(subject)).ToList();                
             }
             catch (SqlException ex)
             {
