@@ -14,6 +14,8 @@ namespace DataLayer.DomainModels.EntityConfigurations
             //Properties
             Property(x => x.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             Property(x => x.Name).IsRequired().HasMaxLength(200);
+
+            //Relationships
             HasMany(x => x.Articles).WithMany(x => x.Subjects);
         }
     }

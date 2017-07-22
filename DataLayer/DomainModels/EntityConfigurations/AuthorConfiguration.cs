@@ -18,7 +18,7 @@ namespace DataLayer.DomainModels.EntityConfigurations
             Property(x => x.Suffix).IsOptional();
 
             //Relationships
-            HasMany(x => x.Articles);
+            HasMany(x => x.Articles).WithMany(y => y.Authors);
         }
     }
 }
