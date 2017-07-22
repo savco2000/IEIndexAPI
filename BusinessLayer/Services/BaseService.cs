@@ -30,8 +30,15 @@ namespace BusinessLayer.Services
             _mapper = mapper;
         }
 
-        public abstract IEnumerable<TEntityVM> GetEntities(Expression<Func<TEntity, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0);
-        public abstract IEnumerable<TEntityVM> GetFullEntities(Expression<Func<TEntity, bool>> searchFilter = null, bool orderDesc = false, int pageSize = 0, int pageNumber = 0);
+        public abstract IEnumerable<TEntityVM> GetEntities(Expression<Func<TEntity, bool>> searchFilter = null, 
+            bool orderDesc = false, 
+            int pageSize = 0, 
+            int pageNumber = 0);
+
+        public abstract IEnumerable<TEntityVM> GetFullEntities(Expression<Func<TEntity, bool>> searchFilter = null, 
+            bool orderDesc = false, 
+            int pageSize = 0, 
+            int pageNumber = 0);
 
         public TEntityVM Find(int id)
         {
