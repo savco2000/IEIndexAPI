@@ -20,13 +20,11 @@ namespace BusinessLayer.SearchFilters
 
             if (!string.IsNullOrWhiteSpace(Title))
                 predicate = predicate.And(p => p.Title.ToLower() == Title.ToLower());
-          
-            Issues issue;
-            if (Enum.TryParse(Issue, true, out issue))
+
+            if (Enum.TryParse(Issue, true, out Issues issue))
                 predicate = predicate.And(p => p.Issue == issue);
-           
-            PublicationYears publicationYear;
-            if (Enum.TryParse(PublicationYear, true, out publicationYear))
+
+            if (Enum.TryParse(PublicationYear, true, out PublicationYears publicationYear))
                 predicate = predicate.And(p => p.PublicationYear == publicationYear);
 
             if (IsSupplement.HasValue)

@@ -23,8 +23,7 @@ namespace BusinessLayer.SearchFilters
             if (!string.IsNullOrWhiteSpace(LastName))
                 predicate = predicate.And(p => p.LastName.ToLower() == LastName.ToLower());
 
-            Suffixes suffix;
-            if (Enum.TryParse(Suffix, true, out suffix))
+            if (Enum.TryParse(Suffix, true, out Suffixes suffix))
                 predicate = predicate.And(p => p.Suffix == suffix);
 
             return predicate;
