@@ -12,18 +12,6 @@ GO
 
 IF NOT EXISTS (SELECT name FROM master.sys.databases WHERE name = N'IEIndex')
 CREATE DATABASE IEIndex  
-ON   
-( NAME = IEIndex_dat,  
-    FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\DATA\ieindex.mdf',  
-    SIZE = 10,  
-    MAXSIZE = 50,  
-    FILEGROWTH = 5 )  
-LOG ON  
-( NAME = IEIndex_log,  
-    FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\DATA\ieindex_log.ldf',  
-    SIZE = 5MB,  
-    MAXSIZE = 25MB,  
-    FILEGROWTH = 5MB ) ;  
 GO 
 
 IF NOT EXISTS (SELECT name FROM master.sys.server_principals WHERE name = 'ieindex')
